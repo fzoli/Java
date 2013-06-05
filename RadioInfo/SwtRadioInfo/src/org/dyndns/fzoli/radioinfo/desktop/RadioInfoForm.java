@@ -116,8 +116,8 @@ public abstract class RadioInfoForm implements RadioInfoView {
             public void run() {
                 if (info != null && info.isValid()) {
                     Music music = info.getMusic();
-                    lbArtistValue.setText(music.getArtist());
-                    lbAddressValue.setText(music.getAddress());
+                    setText(lbArtistValue, music.getArtist());
+                    setText(lbAddressValue, music.getAddress());
                     tiSave.setEnabled(info.isSaveAvailable() && !info.isSaved());
                 }
                 else {
@@ -131,6 +131,10 @@ public abstract class RadioInfoForm implements RadioInfoView {
         });
     }
 
+    private void setText(Label lb, String txt) {
+        lb.setText(txt.replace("&", "&&"));
+    }
+    
     private void save() {
         if (LOADER != null && LOADER.getRadioInfo() != null) {
             if (LOADER.getRadioInfo().save()) tiSave.setEnabled(false);
