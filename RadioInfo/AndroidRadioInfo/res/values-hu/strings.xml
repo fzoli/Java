@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ClassFM Infó</string>
+    <string name="menu_refresh">Frissít</string>
+    <string name="menu_save">Ment</string>
+    <string name="msg_unavailable">A weboldal nem érhető el!</string>
+    <string name="msg_no_data">A weboldal nem szolgált adattal!</string>
+    <string name="msg_changed">A weboldal HTML kódja megváltozott!</string>
+    <string name="msg_save_error">A mentés nem sikerült!</string>
+    <string name="airing">Most megy</string>
+
+</resources>
