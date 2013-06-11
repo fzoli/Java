@@ -37,6 +37,11 @@ public abstract class RadioInfoLoader {
     private final Object LOCK;
     
     /**
+     * A HTTP kapcsolatot lebonyolító kliens objektum.
+     */
+    private final HttpClient CLIENT;
+    
+    /**
      * Az aktuális Http GET kérés.
      * A kérés megszakításához van szükség a referenciájára.
      * Ha nincs letöltés folyamatban, akkor null.
@@ -49,11 +54,19 @@ public abstract class RadioInfoLoader {
      */
     private RadioInfo info;
     
+    /**
+     * Konstruktor.
+     * @param view a nézet, mely jelzi a letöltés állapotait
+     * @param storeFile opcionális fájl, amibe a számok adatai mentődnek
+     * @throws NullPointerException ha a view null
+     */
     public RadioInfoLoader(RadioInfoView view, File storeFile) {
         if (view == null) throw new NullPointerException("View can not be null");
         VIEW = view;
         STORE_FILE = storeFile;
         LOCK = new Object();
+        CLIENT = new DefaultHttpClient();
+        HttpConnectionParams.setConnectionTimeout(CLIENT.getParams(), 5000);
     }
 
     /**
@@ -100,11 +113,9 @@ public abstract class RadioInfoLoader {
             @Override
             public void run() {
                 synchronized (LOCK) {
-                    HttpClient client = new DefaultHttpClient();
-                    HttpConnectionParams.setConnectionTimeout(client.getParams(), 5000);
                     request = new HttpGet(getHttpUrl());
                     try {
-                        HttpResponse response = client.execute(request);
+                        HttpResponse response = CLIENT.execute(request);
                         int status = response.getStatusLine().getStatusCode();
                         if (status >= 200 && status < 300) {
                             InputStream in = response.getEntity().getContent();
