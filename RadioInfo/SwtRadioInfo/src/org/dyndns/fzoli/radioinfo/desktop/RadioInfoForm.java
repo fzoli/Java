@@ -65,8 +65,7 @@ public abstract class RadioInfoForm implements RadioInfoView {
 
     @Override
     public void setStatus(final Status status) {
-        if (status == null) return;
-        if (shell.isDisposed()) return;
+        if (status == null || shell.isDisposed()) return;
         final String key;
         switch (status) {
             case LOADING:
