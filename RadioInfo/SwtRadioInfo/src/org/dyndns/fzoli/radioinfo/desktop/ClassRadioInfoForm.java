@@ -11,11 +11,11 @@ import org.dyndns.fzoli.radioinfo.impl.ClassRadioInfoLoader;
 public class ClassRadioInfoForm extends RadioInfoForm {
 
     public ClassRadioInfoForm() {
-        super();
+        super(R.FILE_CLASS_ICON);
     }
 
     public ClassRadioInfoForm(String storeFileName) {
-        super(storeFileName);
+        super(storeFileName, R.FILE_CLASS_ICON);
     }
 
     @Override

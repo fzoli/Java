@@ -42,13 +42,13 @@ public abstract class RadioInfoForm implements RadioInfoView {
 
     private final RadioInfoLoader LOADER;
 
-    public RadioInfoForm() {
-        this("music.txt");
+    public RadioInfoForm(String logoFileName) {
+        this("music.txt", logoFileName);
     }
     
-    public RadioInfoForm(String storeFileName) {
+    public RadioInfoForm(String storeFileName, String logoFileName) {
         LOADER = createLoader(storeFileName);
-        createContents();
+        createContents(logoFileName);
         refresh();
     }
 
@@ -131,6 +131,7 @@ public abstract class RadioInfoForm implements RadioInfoView {
     }
 
     private void setText(Label lb, String txt) {
+        if (txt == null || txt.trim().isEmpty()) txt = "-";
         lb.setText(txt.replace("&", "&&"));
     }
     
@@ -160,12 +161,12 @@ public abstract class RadioInfoForm implements RadioInfoView {
     
     protected abstract RadioInfoLoader createLoader(String storeFileName);
     
-    private void createContents() {
+    private void createContents(String logoFileName) {
         Display.setAppName(R.APP_NAME);
         display = Display.getDefault();
         shell = new Shell(display);
         shell.setText(R.APP_NAME);
-        shell.setImage(new Image(display, R.getStream(R.FILE_ICON)));
+        shell.setImage(new Image(display, R.getStream(logoFileName)));
 
         shell.addListener(SWT.KeyDown, new Listener() {
 

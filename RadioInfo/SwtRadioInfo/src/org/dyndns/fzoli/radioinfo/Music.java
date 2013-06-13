@@ -18,6 +18,14 @@ public class Music {
 
     /**
      * Új zene példányosítása.
+     * @param values az előadót majd a szám címét tartalmazó, 2 elemű tömb
+     */
+    public Music(String[] values) {
+        this(values[0], values[1]);
+    }
+
+    /**
+     * Új zene példányosítása.
      * @param artist az előadó
      * @param address a szám címe
      */

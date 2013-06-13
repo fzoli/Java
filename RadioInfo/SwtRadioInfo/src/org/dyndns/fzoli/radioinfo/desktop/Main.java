@@ -18,7 +18,15 @@ public class Main {
      */
     public static void main(String[] args) {
         if (SwtLoader.loadSWT()) {
-            new ClassRadioInfoForm().open();
+            if (args.length == 1) {
+                if (args[0].equalsIgnoreCase("fm95"))
+                    new FM95RadioInfoForm().open();
+                else
+                    new ClassRadioInfoForm().open();
+            }
+            else {
+                new ClassRadioInfoForm().open();
+            }
         }
         else {
             try {

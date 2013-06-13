@@ -27,8 +27,15 @@ public abstract class RadioInfo {
      * @param src a betöltő által letöltött válasz a HTML szervertől (általában HTML forráskód)
      */
     public RadioInfo(RadioInfoLoader loader, byte[] src) {
+        Music music;
+        try {
+            music = createMusic(src);
+        }
+        catch (Exception ex) {
+            music = null;
+        }
+        this.MUSIC = music;
         this.LOADER = loader;
-        this.MUSIC = createMusic(src);
     }
     
     /**
@@ -114,6 +121,48 @@ public abstract class RadioInfo {
             return false;
         }
         return true;
+    }
+    
+    /**
+     * String szűrő segédmetódus és újsor eltávolító.
+     * @param text az eredeti, szűrendő szöveg
+     * @param from az a szövegrészlet, melytől kezdődni fog a szűrt szöveg
+     * @param to az a szövegrészlet, melyre végződni fog a szűrt szöveg
+     * @return a szűrt szöveg
+     */
+    protected static String filter(String text, String from, String to) {
+        if (text == null || text.trim().isEmpty()) return "";
+        text = text.replaceAll("\\n|\\r", "");
+        text = text.substring(Math.max(from == null ? 0 : text.indexOf(from), 0));
+        text = text.substring(0, Math.min(to == null ? text.length() : text.indexOf(to) + to.length(), text.length()));
+        return text;
+    }
+    
+    /**
+     * A megadott bájt tömböt alakítja át szöveggé a kért karakterkódolást használva.
+     * @param src egy bájt tömb, mely karakterkódokat tartalmaz
+     * @param encode a bájt tömb karakterkódolása (pl. utf8, iso8859-2)
+     * @return a bájt tömbnek megfelelő szöveg (a kért kódolással, vagy érvénytelen kódolás esetén az alapértelmezett kódolással)
+     */
+    protected static String toString(byte[] src, String encode) {
+        try {
+            return new String(src, encode);
+        }
+        catch (Exception ex) {
+            return new String(src);
+        }
+    }
+    
+    /**
+     * A megadott bájt tömböt alakítja át szöveggé és megformázza azt.
+     * @param src egy bájt tömb, mely karakterkódokat tartalmaz
+     * @param encode a bájt tömb karakterkódolása (pl. utf8, iso8859-2)
+     * @param from az a szövegrészlet, melytől kezdődni fog a szűrt szöveg
+     * @param to az a szövegrészlet, melyre végződni fog a szűrt szöveg
+     * @return a bájt tömbnek megfelelő formázott szöveg
+     */
+    protected static String toString(byte[] src, String encode, String from, String to) {
+        return filter(toString(src, encode), from, to);
     }
     
 }
