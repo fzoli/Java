@@ -100,17 +100,19 @@ public abstract class RadioInfo {
     /**
      * Megpróbálja elmenteni a zene objektumot a fájlba.
      * Mielőtt a mentés elkezdődik:
-     * - Ha a mentés nem érhető el, hamissal tér vissza.
-     * - Ha már el van mentve a zene, igazzal tér vissza.
+     * - Ha a mentés nem érhető el, {@link SaveResult#DISABLED} értékkel tér vissza.
+     * - Ha már el van mentve a zene, {@link SaveResult#ALREADY_SAVED} értékkel tér vissza.
      * A mentés úgy történik, hogy megnyitja append módban a szöveges fájlt
      * és bele írja a zene egyesített szövegét,
      * ami után Windows sorjelet tesz a program OS-től függetlenül.
-     * Ez után a stream lezáródik és ha nem keletkezett kivétel, akkor igazzal tér vissza,
-     * egyébként hamissal.
+     * Ez után a stream lezáródik és ha nem keletkezett kivétel,
+     * akkor {@link SaveResult#SUCCESS} értékkel tér vissza,
+     * egyébként {@link SaveResult#ERROR} értékkel.
+     * @see SaveResult#isSaved()
      */
-    public boolean save() {
-        if (!isSaveAvailable()) return false;
-        if (isSaved()) return true;
+    public SaveResult save() {
+        if (!isSaveAvailable()) return SaveResult.DISABLED;
+        if (isSaved()) return SaveResult.ALREADY_SAVED;
         try {
             BufferedWriter out = new BufferedWriter(new FileWriter(LOADER.getStoreFile(), true));
             out.write(getMusic().getText() + "\r\n");
@@ -118,9 +120,47 @@ public abstract class RadioInfo {
             out.close();
         }
         catch (Exception ex) {
-            return false;
+            return SaveResult.ERROR;
         }
-        return true;
+        return SaveResult.SUCCESS;
+    }
+    
+    /**
+     * Definiálja a mentés metódus lefutásának az eredményeit.
+     */
+    public enum SaveResult {
+        
+        /** Sikeres mentés. */
+        SUCCESS(true),
+        
+        /** Sikertelen mentés. */
+        ERROR,
+        
+        /** Nem történt mentés, mert már el lett mentve. */
+        ALREADY_SAVED(true),
+        
+        /** A mentés funkció nem érhető el. */
+        DISABLED;
+
+        private final boolean SAVED;
+        
+        private SaveResult() {
+            this(false);
+        }
+
+        private SaveResult(boolean saved) {
+            SAVED = saved;
+        }
+        
+        /**
+         * Megadja, hogy az elmentésre kért adat benne van-e a fájlban.
+         * @return true, ha a mentés sikerült és bele került a fájlba az adat
+         * vagy ha már a mentés előtt is benne volt a fájlban; egyébként false
+         */
+        public boolean isSaved() {
+            return SAVED;
+        }
+        
     }
     
     /**
@@ -131,7 +171,7 @@ public abstract class RadioInfo {
      * @return a szűrt szöveg
      */
     protected static String filter(String text, String from, String to) {
-        if (text == null || text.trim().isEmpty()) return "";
+        if (text == null || text.trim().length() == 0) return "";
         text = text.replaceAll("\\n|\\r", "");
         text = text.substring(Math.max(from == null ? 0 : text.indexOf(from), 0));
         text = text.substring(0, Math.min(to == null ? text.length() : text.indexOf(to) + to.length(), text.length()));

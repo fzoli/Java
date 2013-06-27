@@ -8,6 +8,9 @@
     <string name="msg_no_data">The website has not sent data!</string>
     <string name="msg_changed">The source of the website was changed!</string>
     <string name="msg_save_error">An error has been occurred while saving!</string>
+    <string name="msg_save_success">The music data has been successfully saved to the music.txt file.</string>
+    <string name="msg_saved_already">The music data has been already saved.</string>
+    <string name="msg_no_save">There is no data to save!</string>
     <string name="airing">On the air</string>
 
 </resources>

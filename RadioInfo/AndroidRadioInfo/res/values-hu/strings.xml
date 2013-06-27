@@ -8,6 +8,9 @@
     <string name="msg_no_data">A weboldal nem szolgált adattal!</string>
     <string name="msg_changed">A weboldal HTML kódja megváltozott!</string>
     <string name="msg_save_error">A mentés nem sikerült!</string>
+    <string name="msg_save_success">Sikeres mentés a music.txt fájlba.</string>
+    <string name="msg_saved_already">A zene adatai már el vannak mentve.</string>
+    <string name="msg_no_save">Nincs mit menteni!</string>
     <string name="airing">Most megy</string>
 
 </resources>

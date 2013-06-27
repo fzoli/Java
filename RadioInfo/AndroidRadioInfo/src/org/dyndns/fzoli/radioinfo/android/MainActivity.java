@@ -116,8 +116,22 @@ public class MainActivity extends SherlockActivity implements RadioInfoView {
 	}
 
     private void save() {
-        if (LOADER != null && LOADER.getRadioInfo() != null) {
-            if (!LOADER.getRadioInfo().save()) Toast.makeText(this, R.string.msg_save_error, Toast.LENGTH_SHORT).show();
+    	if (LOADER == null) return;
+    	int key = R.string.msg_no_save;
+        if (LOADER.getRadioInfo() != null) {
+        	switch (LOADER.getRadioInfo().save()) {
+        		case SUCCESS:
+        			key = R.string.msg_save_success;
+        			break;
+        		case ALREADY_SAVED:
+        			key = R.string.msg_saved_already;
+        			break;
+        		case ERROR:
+        			key = R.string.msg_save_error;
+        		default:
+        			break;
+        	}
         }
+        Toast.makeText(this, key, Toast.LENGTH_SHORT).show();
     }
 }

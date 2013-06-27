@@ -137,7 +137,7 @@ public abstract class RadioInfoForm implements RadioInfoView {
     
     private void save() {
         if (LOADER != null && LOADER.getRadioInfo() != null) {
-            if (LOADER.getRadioInfo().save()) tiSave.setEnabled(false);
+            if (LOADER.getRadioInfo().save().isSaved()) tiSave.setEnabled(false);
             else MessageDialog.openError(shell, R.getValue(R.KEY_ERROR), R.getValue(R.KEY_SAVE_ERROR));
         }
     }
