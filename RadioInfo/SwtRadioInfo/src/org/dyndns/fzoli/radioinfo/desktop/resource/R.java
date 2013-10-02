@@ -44,7 +44,8 @@ public class R {
     public static final String FILE_SAVE = "Save-icon.png",
             FILE_REFRESH = "Refresh-icon.png",
             FILE_CLASS_ICON = "ClassFM-logo.png",
-            FILE_FM95_ICON = "RadioFM95-logo.png";
+            FILE_FM95_ICON = "RadioFM95-logo.png",
+            FILE_JUVENTUS_ICON = "Juventus-logo.png";
 
     /**
      * A kért kulcshoz társított szöveget adja vissza a values.properties fájlból.

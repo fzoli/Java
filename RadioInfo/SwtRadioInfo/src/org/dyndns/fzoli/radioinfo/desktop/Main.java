@@ -21,6 +21,8 @@ public class Main {
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("fm95"))
                     new FM95RadioInfoForm().open();
+                else if (args[0].equalsIgnoreCase("juventus"))
+                    new JuventusRadioInfoForm().open();
                 else
                     new ClassRadioInfoForm().open();
             }
