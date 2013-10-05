@@ -4,12 +4,20 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+//import org.dyndns.fzoli.radioinfo.desktop.resource.CharsetUtils;
 
 /**
  * A rádió HTML válaszából készít zene objektumot és kérésre fájlba menti.
  * @author zoli
  */
 public abstract class RadioInfo {
+    
+//    /**
+//     * A számcímeket tároló fájlba mentéshez ismerni kell a fájl kódolását, mielőtt mentünk bele.
+//     * A kódolás lehet UTF-8 illetve ISO-8859-2; más kódolás nem támogatott.
+//     * Ha a fájl nem létezik, a rendszer alapértelmezett kódolása lesz használva.
+//     */
+//    private static final CharsetUtils CHARSET_UTILS = new CharsetUtils(new String[] {"UTF-8", "ISO-8859-2"});
     
     /**
      * A zene objektum referenciája.
@@ -114,8 +122,7 @@ public abstract class RadioInfo {
         if (!isSaveAvailable()) return SaveResult.DISABLED;
         if (isSaved()) return SaveResult.ALREADY_SAVED;
         try {
-//            FileOutputStream out = new FileOutputStream(LOADER.getStoreFile(), true);
-//            out.write(toLatin2(getMusic().getText() + "\r\n"));
+//            if (!CHARSET_UTILS.saveToFile(getMusic().getText() + "\r\n", LOADER.getStoreFile(), true)) return SaveResult.ERROR;
             BufferedWriter out = new BufferedWriter(new FileWriter(LOADER.getStoreFile(), true));
             out.write(getMusic().getText() + "\r\n");
             out.flush();
@@ -206,16 +213,5 @@ public abstract class RadioInfo {
     protected static String toString(byte[] src, String encode, String from, String to) {
         return filter(toString(src, encode), from, to);
     }
-    
-//    private static byte[] toLatin2(String utf8str) {
-//        Charset utf8charset = Charset.forName("UTF-8");
-//        Charset iso88592charset = Charset.forName("ISO-8859-2");
-//        ByteBuffer inputBuffer = ByteBuffer.wrap(utf8str.getBytes());
-//        // decode UTF-8
-//        CharBuffer data = utf8charset.decode(inputBuffer);
-//        // encode ISO-8559-2
-//        ByteBuffer outputBuffer = iso88592charset.encode(data);
-//        return outputBuffer.array();
-//    }
     
 }
