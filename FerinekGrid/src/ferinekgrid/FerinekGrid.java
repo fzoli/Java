@@ -32,13 +32,28 @@ import javax.swing.UIManager;
  */
 public class FerinekGrid extends JFrame {
     
+    /**
+     * Egy rács lehet üres, vagy lehet benne X illetve O szimbólum.
+     */
     public static enum Symbol {EMPTY, X, O}
     
     private class GridLabel extends JLabel {
         
+        /**
+         * A rács keretvastagsága, tehát a látszólagos vonalvastagság fele.
+         * Minimum érték 1, tehát a legkisebb vonalvastagság 2 px
+         */
         private static final int LINE_WIDTH = 1;
+        
+        /**
+         * A szimbólum rajzolásához használt behúzás értéke százalékban.
+         * 0.08 esetén 8% a behúzás, természetesen mind a négy irányból.
+         */
         private static final double PADDING = 0.08;
         
+        /**
+         * Kezdetben nincs szimbólum. (null referencia elkerülése)
+         */
         private Symbol symbol = Symbol.EMPTY;
         
         private final MouseListener mouseListener = new MouseAdapter() {
@@ -78,7 +93,16 @@ public class FerinekGrid extends JFrame {
         }
         
         private Rectangle getPaintArea() {
-            return new Rectangle(LINE_WIDTH + (int)(getWidth() * PADDING), LINE_WIDTH + (int)(getHeight() * PADDING), getWidth()-(2 * LINE_WIDTH + 1) - (int)(2 * getWidth() * PADDING), getHeight() - (2 * LINE_WIDTH + 1) - (int)(2 * getHeight() * PADDING));
+            Rectangle r = new Rectangle(LINE_WIDTH + (int)(getWidth() * PADDING), LINE_WIDTH + (int)(getHeight() * PADDING), getWidth()-(2 * LINE_WIDTH + 1) - (int)(2 * getWidth() * PADDING), getHeight() - (2 * LINE_WIDTH + 1) - (int)(2 * getHeight() * PADDING));
+            if (getWidth() - 1 - (r.x + r.width) != r.x) {
+                r.x++;
+                r.width--;
+            }
+            if (getHeight() - 1 - (r.y + r.height) != r.y) {
+                r.y++;
+                r.height--;
+            }
+            return r;
         }
         
         private void paintSymbol(Graphics2D g, Rectangle area) {
