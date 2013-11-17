@@ -1,9 +1,13 @@
 package jpatest;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * JPA example.
@@ -32,6 +36,18 @@ public class Main {
         int count = t.getChildList().size();
         System.out.println("The first node has " + count + " " + (count > 1 ? "children" : "child") + ".");
         if (count > 0) System.out.println("The name of the first child: " + t.getChildList().get(0).getName());
+        
+        // retrieve all nodes using JPQL (order by names)
+        List<Node> ls = manager.createQuery("from Nodes n order by n.name asc", Node.class).getResultList(); // Nodes because of annotation @Entity(name = "Nodes") [or write the full class name: jpatest.Node]
+        System.out.println(ls);
+        
+        // retrieve all nodes using criteria (you don't have to use String so you can rename entity names safely)
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<Node> query = builder.createQuery(Node.class); // you will get Node objects
+        Root<Node> root = query.from(Node.class); // select from node table without join
+        query.orderBy(builder.asc(root.get(Node_.name))); // Node_ is a generated class that contains attributes of Node
+        ls = manager.createQuery(query).getResultList();
+        System.out.println(ls);
         
         manager.close();
         factory.close();
