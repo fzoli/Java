@@ -1,0 +1,7 @@
+Egy egyszerű, megbízható időmérő alkalmazás.
+
+A mért idő megmarad az alkalmazás újraindításával.
+A mért időn kívűl a stopper állapota (áll, megy) és az időt megjelenítő ablak állapota (látható-e, hol van) is mentésre kerül.
+
+Az adatok tárolására használt fájl: ~/timemeter.json
+Ezen kívűl még használatos a ~/timemeter.lock nevű fájl is, hogy ne lehessen az alkalmazást több példányban futtatni.
