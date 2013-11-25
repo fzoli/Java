@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -46,19 +45,19 @@ public class DetailsFrame extends Window {
             if (counter % 5 == 0) {
                 Timemeter.getSummaryFrame().refreshHours();
                 Timemeter.getSummaryFrame().refreshCurrency();
-                final Interval iv = STORAGE.getIntervals().get(STORAGE.getIntervals().size() - 1);
-                final long niceTime = new Interval().setBegin(iv.getBegin()).setEnd(new Date()).getTime();
-                if (niceTime - (TIMER.getDelay() * 5 * 2) > additionalTime) {
-                    new Thread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            alertDelay(iv, niceTime);
-                        }
-                        
-                    }).start();
-                }
-                additionalTime = niceTime;
+//                final Interval iv = STORAGE.getIntervals().get(STORAGE.getIntervals().size() - 1);
+//                final long niceTime = new Interval().setBegin(iv.getBegin()).setEnd(new Date()).getTime();
+//                if (niceTime - (TIMER.getDelay() * 5 * 2) > additionalTime) {
+//                    new Thread(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            alertDelay(iv, niceTime);
+//                        }
+//                        
+//                    }).start();
+//                }
+//                additionalTime = niceTime;
             }
             if (++counter >= SAFE_COUNT) {
                 if (!alertDelayVisible) {

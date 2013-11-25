@@ -59,6 +59,7 @@ public class SummaryFrame extends JFrame {
     
     private static final SimpleDateFormat FMT_DAY = new SimpleDateFormat("yyyy.MM.dd.");
     private static final SimpleDateFormat FMT_TIME = new SimpleDateFormat("HH:mm:ss");
+    private static final SimpleDateFormat FMT_DAY_TIME = new SimpleDateFormat("yyyy.MM.dd. HH:mm:ss");
     private static final NumberFormat FMT_CURRENCY = NumberFormat.getCurrencyInstance();
     
     private final JTextNumberField TF_PRICE = new JTextNumberField(new DecimalFormat("#.##").format(STORAGE.getPrice()).replaceAll(",", ".")) {
@@ -633,8 +634,8 @@ public class SummaryFrame extends JFrame {
                     ls.remove(i + 1);
                     continue;
                 }
-                if (iv.getEnd().equals(iv2.getBegin())) {
-                    iv.setEnd(iv2.getEnd());
+                if (FMT_DAY_TIME.format(iv.getEnd()).equals(FMT_DAY_TIME.format(iv2.getBegin()))) {
+                    ls.set(i, new Interval().setBegin(iv.getBegin()).setEnd(iv2.getEnd()));
                     ls.remove(i + 1);
                     continue;
                 }
