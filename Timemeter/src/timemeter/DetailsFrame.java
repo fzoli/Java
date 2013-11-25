@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -45,10 +46,25 @@ public class DetailsFrame extends Window {
             if (counter % 5 == 0) {
                 Timemeter.getSummaryFrame().refreshHours();
                 Timemeter.getSummaryFrame().refreshCurrency();
+                final Interval iv = STORAGE.getIntervals().get(STORAGE.getIntervals().size() - 1);
+                final long niceTime = new Interval().setBegin(iv.getBegin()).setEnd(new Date()).getTime();
+                if (niceTime - (TIMER.getDelay() * 5 * 2) > additionalTime) {
+                    new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            alertDelay(iv, niceTime);
+                        }
+                        
+                    }).start();
+                }
+                additionalTime = niceTime;
             }
             if (++counter >= SAFE_COUNT) {
-                startStop(false, true);
-                startStop(true, true);
+                if (!alertDelayVisible) {
+                    startStop(false, true);
+                    startStop(true, true);
+                }
                 counter = 0;
             }
         }
@@ -204,10 +220,26 @@ public class DetailsFrame extends Window {
         }
     }
     
+    private boolean alertDelayVisible = false;
+    
+    private void alertDelay(Interval iv, long time) {
+        if (alertDelayVisible) return;
+        alertDelayVisible = true;
+        boolean b = showDialog("Időeltolódás", "Túl nagy időeltolódást észleltem a\n" + createTimeText(time) + " ideje indított mérésben.\n\nTöröljem az utolsó mérést?");
+        alertDelayVisible = false;
+        if (b) {
+            boolean running = STORAGE.isRunning();
+            if (running) startStop(false, true);
+            STORAGE.getIntervals().remove(iv);
+            additionalTime = 0;
+            LB_TIMER.setText(createTimeText(startTime + additionalTime));
+            if (running) startStop(true, true);
+            SummaryFrame.refresh();
+        }
+    }
+    
     void timeReset() {
-        JFrame dummy = new JFrame();
-        dummy.setIconImage(Timemeter.getTrayImage());
-        if (startTime + additionalTime == 0 || JOptionPane.showOptionDialog(dummy, "Biztos, hogy nullázni akarja a számlálót?", "Megerősítés", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Igen","Nem"}, "Nem") != 0) return;
+        if (startTime + additionalTime == 0 || !showDialog("Megerősítés", "Biztos, hogy nullázni akarja a számlálót?")) return;
 //        boolean running = STORAGE.isRunning();
         startStop(false);
         STORAGE.getIntervals().clear();
@@ -225,6 +257,14 @@ public class DetailsFrame extends Window {
         mi.addActionListener(AL_MENU_HIDER);
         mi.addActionListener(al);
         return mi;
+    }
+    
+    private static boolean showDialog(String title, String msg) {
+        JFrame dummy = new JFrame();
+        dummy.setIconImage(Timemeter.getTrayImage());
+        boolean b = JOptionPane.showOptionDialog(dummy, msg, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Igen","Nem"}, "Nem") == 0;
+        dummy.dispose();
+        return b;
     }
     
     public static String createTimeText(long time) {

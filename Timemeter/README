@@ -8,3 +8,8 @@ Ezen kívűl még használatos a ~/timemeter.lock nevű fájl is, hogy ne lehess
 
 Összegző modul:
 Napokra bontva megjeleníti a rögzített időintervallumokat (kezdés ideje, befejezés ideje, eltelt idő), és a megadott óradíj alapján kiszámolja a bruttó munkabért.
+
+Felfüggesztés / Hibernálás:
+Ha a stopper a gép felfüggesztése előtt futva marad, a feléledéskor feljön egy Igen/Nem ablak.
+Az Igen szövegre kattintva az utolsó mérés törlődik.
+Hogy minnél kevesebb idő vesszen el a törléskor, a mérések 10 perces bontásokban tárolódnak el, így az utolsó mérésből is maximum az utolsó 10 perc vész el.
