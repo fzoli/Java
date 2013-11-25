@@ -137,9 +137,12 @@ public class SummaryFrame extends JFrame {
     };
     
     private final JTable INTERVAL_TABLE = new JTable(TABLE_MODEL) {
+        
         {
-            setDefaultRenderer(Object.class, new SummaryTableRenderer(TABLE_MODEL));
             ((DefaultTableCellRenderer)getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+            SummaryTableRenderer renderer = new SummaryTableRenderer(TABLE_MODEL);
+            setDefaultRenderer(Date.class, renderer);
+            setDefaultRenderer(Long.class, renderer);
             setRowSorter(TABLE_SORTER);
         }
 
