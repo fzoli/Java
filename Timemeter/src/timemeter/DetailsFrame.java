@@ -27,6 +27,7 @@ public class DetailsFrame extends Window {
     
     private long startTime = STORAGE.getTimeSum();
     private long additionalTime = 0;
+    private int tickCounter = 0;
     
     private final Timer TIMER = new Timer(1000, new ActionListener() {
         
@@ -36,10 +37,15 @@ public class DetailsFrame extends Window {
         
         @Override
         public void actionPerformed(ActionEvent e) {
+            tickCounter++;
             additionalTime += TIMER.getDelay();
             String txt = createTimeText(startTime + additionalTime);
             LB_TIMER.setText(txt);
             Timemeter.setTrayToolTip(txt);
+            if (counter % 5 == 0) {
+                Timemeter.getSummaryFrame().refreshHours();
+                Timemeter.getSummaryFrame().refreshCurrency();
+            }
             if (++counter >= SAFE_COUNT) {
                 startStop(false, true);
                 startStop(true, true);
@@ -157,6 +163,18 @@ public class DetailsFrame extends Window {
         setLocation(STORAGE.getFrameLocation(this));
     }
 
+    public double getAllHours() {
+        return getHours(startTime + additionalTime);
+    }
+
+    public double getAdditionalHours() {
+        return getHours(tickCounter * TIMER.getDelay());
+    }
+    
+    private double getHours(long l) {
+        return l / (1000.0 * 60 * 60);
+    }
+    
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.BLACK);
@@ -178,9 +196,11 @@ public class DetailsFrame extends Window {
         if (!safe || start && safe) STORAGE.setTimer(start, true);
         if (start) TIMER.start();
         else TIMER.stop();
+        tickCounter = 0;
         if (!safe) {
             BT_START_STOP.setText(start ? "Stop" : "Start");
             Timemeter.paintTray(start);
+            SummaryFrame.refresh();
         }
     }
     
@@ -193,6 +213,7 @@ public class DetailsFrame extends Window {
         STORAGE.getIntervals().clear();
         STORAGE.save();
         startTime = additionalTime = 0;
+        SummaryFrame.refresh();
         String txt = createTimeText(0);
         LB_TIMER.setText(txt);
         Timemeter.setTrayToolTip(txt);

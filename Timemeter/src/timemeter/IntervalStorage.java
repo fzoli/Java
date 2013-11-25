@@ -11,6 +11,7 @@ import java.util.List;
 
 class StorageBean {
     
+    double price = 850;
     boolean running = false;
     boolean frameVisible = true;
     final Point frameLocation = new Point(0, 0);
@@ -31,12 +32,24 @@ class IntervalStorage {
 
     private Interval runningInterval;
     
-    public long getTimeSum() {
+    public static long getTimeSum(List<Interval> l) {
         long sum = 0;
-        for (Interval i : getIntervals()) {
+        for (Interval i : l) {
             sum += i.getTime();
         }
         return sum;
+    }
+    
+    public long getTimeSum() {
+        return getTimeSum(getIntervals());
+    }
+    
+    public double getPrice() {
+        return BEAN.price;
+    }
+    
+    public void setPrice(double price) {
+        BEAN.price = price;
     }
     
     public boolean isFrameVisible() {

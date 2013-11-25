@@ -30,10 +30,20 @@ public class Timemeter {
     private static boolean trayAvailable = SystemTray.isSupported();
     
     private static CheckboxMenuItem miStartStop;
-    private static DetailsFrame frDetails;
     private static TrayIcon trayIcon;
     private static Graphics2D grTray;
     private static Image imgTray;
+    
+    private static SummaryFrame frSummary;
+    private static DetailsFrame frDetails;
+    
+    static SummaryFrame getSummaryFrame() {
+        return frSummary;
+    }
+    
+    static DetailsFrame getDetailsFrame() {
+        return frDetails;
+    }
     
     static Image getTrayImage() {
         return imgTray;
@@ -128,10 +138,20 @@ public class Timemeter {
                 }
                 
             });
-            
+            MenuItem miSummary = new MenuItem("Összegzés");
+            miSummary.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    frSummary.setVisible(true);
+                }
+                
+            });
             PopupMenu menu = new PopupMenu();
             menu.add(miStartStop);
             menu.add(miReset);
+            menu.addSeparator();
+            menu.add(miSummary);
             menu.addSeparator();
             menu.add(miExit);
             trayIcon.setPopupMenu(menu);
@@ -144,6 +164,8 @@ public class Timemeter {
         }
         frDetails = new DetailsFrame();
         frDetails.setVisible(trayAvailable ? STORAGE.isFrameVisible() : true);
+        SummaryFrame.refresh();
+        frSummary = new SummaryFrame();
     }
     
 }

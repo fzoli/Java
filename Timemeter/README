@@ -5,3 +5,6 @@ A mért időn kívűl a stopper állapota (áll, megy) és az időt megjelenít�
 
 Az adatok tárolására használt fájl: ~/timemeter.json
 Ezen kívűl még használatos a ~/timemeter.lock nevű fájl is, hogy ne lehessen az alkalmazást több példányban futtatni.
+
+Összegző modul:
+Napokra bontva megjeleníti a rögzített időintervallumokat (kezdés ideje, befejezés ideje, eltelt idő), és a megadott óradíj alapján kiszámolja a bruttó munkabért.
