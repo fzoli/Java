@@ -171,7 +171,7 @@ public class DetailsFrame extends Window {
         return getHours(tickCounter * TIMER.getDelay());
     }
     
-    private double getHours(long l) {
+    public static double getHours(long l) {
         return l / (1000.0 * 60 * 60);
     }
     

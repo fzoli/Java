@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -141,6 +142,17 @@ public class SummaryFrame extends JFrame {
             ((DefaultTableCellRenderer)getTableHeader().getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
             setRowSorter(TABLE_SORTER);
         }
+
+        @Override
+        public String getToolTipText(MouseEvent event) {
+            int row = rowAtPoint(event.getPoint());
+            if (row < 0) return null;
+            row = convertRowIndexToModel(row);
+            long time = TABLE_MODEL.getIntervals().get(row).getTime();
+            if (time < 1000) return null;
+            return FMT_CURRENCY.format(DetailsFrame.getHours(time) * STORAGE.getPrice());
+        }
+        
     };
     
     private static class DayInfo {
