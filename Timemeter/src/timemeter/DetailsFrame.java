@@ -40,9 +40,7 @@ public class DetailsFrame extends Window {
             tickCounter++;
             additionalTime += TIMER.getDelay();
             long sumTime = startTime + additionalTime;
-            String txt = createTimeText(sumTime);
-            LB_TIMER.setText(txt);
-            Timemeter.setTrayToolTip(txt);
+            refreshCounterTime(sumTime);
             boolean b = true;
             if (tickCounter % REFR_COUNT == 0) {
                 Timemeter.getSummaryFrame().refreshCurrency();
@@ -72,7 +70,7 @@ public class DetailsFrame extends Window {
         
     });
     
-    private final JLabel LB_TIMER = new JLabel(createTimeText(STORAGE.getTimeSum()));
+    private final JLabel LB_TIMER = new JLabel(createTimeText(STORAGE.getTimeSum(), true));
     
     private final JButton BT_START_STOP = new JButton("Start") {
         {
@@ -111,6 +109,16 @@ public class DetailsFrame extends Window {
                     }
 
                 }));
+                addSeparator();
+                add(createMenuItem("Összegzés", new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        Timemeter.getSummaryFrame().setVisible(true);
+                    }
+
+                }));
+                addSeparator();
             }
             add(createMenuItem(Timemeter.isTrayAvailable() ? "Bezár" : "Kilép", new ActionListener() {
 
@@ -217,16 +225,14 @@ public class DetailsFrame extends Window {
     private void alertDelay(Interval iv, long time) {
         if (alertDelayVisible) return;
         alertDelayVisible = true;
-        boolean b = showDialog("Időeltolódás", "Túl nagy időeltolódást észleltem a\n" + createTimeText(time) + " ideje indított mérésben.\n\nTöröljem az utolsó mérést?");
+        boolean b = showDialog("Időeltolódás", "Túl nagy időeltolódást észleltem a\n" + createTimeText(time, false) + " ideje indított mérésben.\n\nTöröljem az utolsó mérést?");
         boolean running = STORAGE.isRunning();
         if (running) startStop(false, true);
         if (b) {
             STORAGE.getIntervals().remove(iv);
             startTime = STORAGE.getTimeSum();
             additionalTime = 0;
-            String txt = createTimeText(startTime);
-            LB_TIMER.setText(txt);
-            Timemeter.setTrayToolTip(txt);
+            refreshCounterTime(startTime);
         }
         if (running) startStop(true, true);
         else SummaryFrame.refresh();
@@ -241,10 +247,13 @@ public class DetailsFrame extends Window {
         STORAGE.save();
         startTime = additionalTime = 0;
         SummaryFrame.refresh();
-        String txt = createTimeText(0);
-        LB_TIMER.setText(txt);
-        Timemeter.setTrayToolTip(txt);
+        refreshCounterTime(0);
 //        if (running) startStop(true);
+    }
+    
+    private void refreshCounterTime(long l) {
+        LB_TIMER.setText(createTimeText(l, true));
+        Timemeter.setTrayToolTip(createTimeText(l, false));
     }
     
     private JMenuItem createMenuItem(String s, ActionListener al) {
@@ -262,13 +271,38 @@ public class DetailsFrame extends Window {
         return b;
     }
     
-    public static String createTimeText(long time) {
+    public static String createTimeText(long time, boolean extend) {
+        TimeInfo i = createTimeInfo(time);
+        return String.format("%0" + (extend ? "3" : "2") + "d:%02d:%02d", i.hours, i.minutes, i.seconds);
+    }
+    
+    public static String createFullTimeText(long time, boolean detail) {
+        TimeInfo i = createTimeInfo(time);
+        if (detail) return String.format("%02d.%03d", i.seconds, i.msec);
+        return String.format("%02d:%02d:%02d"+(i.msec > 0 ? ".%03d" : ""), i.hours, i.minutes, i.seconds, i.msec);
+    }
+    
+    static TimeInfo createTimeInfo(long time) {
         long hours = time / (1000 * 60 * 60);
         time -= hours * (1000 * 60 * 60);
         long minutes = time / (1000 * 60);
         time -= minutes * (1000 * 60);
         long seconds = time / 1000;
-        return String.format("%03d:%02d:%02d", hours, minutes, seconds);
+        time -= seconds * 1000;
+        return new TimeInfo(hours, minutes, seconds, time);
+    }
+    
+}
+
+class TimeInfo {
+    
+    final int hours, minutes, seconds, msec;
+
+    public TimeInfo(long hours, long minutes, long seconds, long msec) {
+        this.hours = (int) hours;
+        this.minutes = (int) minutes;
+        this.seconds = (int) seconds;
+        this.msec = (int) msec;
     }
     
 }

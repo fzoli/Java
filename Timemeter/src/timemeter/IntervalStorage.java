@@ -1,10 +1,12 @@
 package timemeter;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +28,7 @@ class IntervalStorage {
     
     private static Boolean locked;
     
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy.MM.dd. HH:mm:ss.SSS").create();
     
     private final StorageBean BEAN = load();
 

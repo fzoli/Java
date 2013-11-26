@@ -77,6 +77,7 @@ public class SummaryFrame extends JFrame {
     };
     
     private final JLabel LB_CURRENCY = new JLabel(FMT_CURRENCY.format(0), SwingConstants.RIGHT);
+    private final JLabel LB_CURRENCY_TIME = new JLabel(DetailsFrame.createTimeText(0, false), SwingConstants.RIGHT);
     
     private final JList<DayInfo> DAY_INFO_LIST = new JList<DayInfo>(LIST_MODEL) {
         {
@@ -154,7 +155,7 @@ public class SummaryFrame extends JFrame {
             row = convertRowIndexToModel(row);
             long time = TABLE_MODEL.getIntervals().get(row).getTime();
             if (time < 1000) return null;
-            return FMT_CURRENCY.format(getHours(time) * STORAGE.getPrice());
+            return FMT_CURRENCY.format(getHours(time, false) * STORAGE.getPrice());
         }
         
     };
@@ -367,6 +368,10 @@ public class SummaryFrame extends JFrame {
             MODEL = model;
         }
         
+        private void setTimeText(JLabel c, long l) {
+            c.setText(DetailsFrame.createFullTimeText(l, false));
+        }
+        
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             JLabel c = (JLabel) super.getTableCellRendererComponent(table, value, false, false, row, column);
@@ -391,7 +396,7 @@ public class SummaryFrame extends JFrame {
                         int modelRow = table.convertRowIndexToModel(row);
                         Interval i = MODEL.getIntervals().get(modelRow);
                         if (i.getEnd() != null) {
-                            c.setText(DetailsFrame.createTimeText(l));
+                            setTimeText(c, l);
                         }
                         else {
                             if (MODEL.isLastDay()) {
@@ -406,7 +411,7 @@ public class SummaryFrame extends JFrame {
                         }
                     }
                     else {
-                        c.setText(DetailsFrame.createTimeText(l));
+                        setTimeText(c, l);
                     }
                     break;
             }
@@ -460,6 +465,9 @@ public class SummaryFrame extends JFrame {
         cp.gridy = 1;
         cp.gridwidth = 2;
         cp.insets = new Insets(5, 0, 0, 0);
+        pricePanel.add(new JLabel("Munkaidő:"), cp);
+        pricePanel.add(LB_CURRENCY_TIME, cp);
+        cp.gridy = 2;
         pricePanel.add(new JLabel("Fizetendő:"), cp);
         pricePanel.add(LB_CURRENCY, cp);
         GridBagConstraints cr = new GridBagConstraints();
@@ -509,9 +517,13 @@ public class SummaryFrame extends JFrame {
     }
     
     public final void refreshCurrency() {
-        double money = getHours(STORAGE.getRunningTimeSum()) * TF_PRICE.getNumber();
+        long time = STORAGE.getRunningTimeSum();
+        long roundedTime = createTime(time, true);
+        double money = getHours(time, true) * TF_PRICE.getNumber();
         LB_CURRENCY.setText(FMT_CURRENCY.format(round(money)));
         LB_CURRENCY.setToolTipText(FMT_CURRENCY.format(money));
+        LB_CURRENCY_TIME.setText(DetailsFrame.createFullTimeText(roundedTime, false));
+        LB_CURRENCY_TIME.setToolTipText(DetailsFrame.createFullTimeText(time, false));
     }
     
     private final DecimalFormat DF_ROUNDER = new DecimalFormat("0.00");
@@ -619,12 +631,17 @@ public class SummaryFrame extends JFrame {
         return ls;
     }
     
-    private static double getHours(long l) {
+    private static double getHours(long l, boolean round) {
+        return createTime(l, round) / (1000.0 * 60 * 60);
+    }
+    
+    private static long createTime(long l, boolean round) {
+        if (!round) return l;
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(l);
-//        if (c.get(Calendar.MILLISECOND) >= 500) c.set(Calendar.SECOND, c.get(Calendar.SECOND) + 1);
+        if (c.get(Calendar.MILLISECOND) > 0) c.set(Calendar.SECOND, c.get(Calendar.SECOND) + 1);
         c.set(Calendar.MILLISECOND, 0);
-        return c.getTimeInMillis() / (1000.0 * 60 * 60);
+        return c.getTimeInMillis();
     }
     
     private static Date createDay(Date d) {

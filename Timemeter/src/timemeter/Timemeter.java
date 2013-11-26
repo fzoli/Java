@@ -101,13 +101,13 @@ public class Timemeter {
             grTray.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[]{7.0f, 2.0f}, 0.0f));
             grTray.addRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
             trayIcon = new TrayIcon(imgTray);
-            setTrayToolTip(DetailsFrame.createTimeText(STORAGE.getTimeSum()));
+            setTrayToolTip(DetailsFrame.createTimeText(STORAGE.getTimeSum(), false));
             miStartStop = new CheckboxMenuItem("Mérés", STORAGE.isRunning());
             miStartStop.addItemListener(new ItemListener() {
 
                 @Override
                 public void itemStateChanged(ItemEvent e) {
-                    frDetails.startStop(!STORAGE.isRunning());
+                    if (frDetails != null) frDetails.startStop(!STORAGE.isRunning());
                 }
                 
             });
@@ -116,7 +116,7 @@ public class Timemeter {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    frDetails.setVisible(!frDetails.isVisible());
+                    if (frDetails != null) frDetails.setVisible(!frDetails.isVisible());
                 }
                 
             });
@@ -125,7 +125,7 @@ public class Timemeter {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    frDetails.timeReset();
+                    if (frDetails != null) frDetails.timeReset();
                 }
                 
             });
@@ -143,7 +143,7 @@ public class Timemeter {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    frSummary.setVisible(true);
+                    if (frSummary != null) frSummary.setVisible(true);
                 }
                 
             });
