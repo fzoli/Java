@@ -154,7 +154,7 @@ public class SummaryFrame extends JFrame {
             row = convertRowIndexToModel(row);
             long time = TABLE_MODEL.getIntervals().get(row).getTime();
             if (time < 1000) return null;
-            return FMT_CURRENCY.format(DetailsFrame.getHours(time) * STORAGE.getPrice());
+            return FMT_CURRENCY.format(getHours(time) * STORAGE.getPrice());
         }
         
     };
@@ -509,7 +509,7 @@ public class SummaryFrame extends JFrame {
     }
     
     public final void refreshCurrency() {
-        double money = Timemeter.getDetailsFrame().getAllHours() * TF_PRICE.getNumber();
+        double money = getHours(STORAGE.getRunningTimeSum()) * TF_PRICE.getNumber();
         LB_CURRENCY.setText(FMT_CURRENCY.format(round(money)));
         LB_CURRENCY.setToolTipText(FMT_CURRENCY.format(money));
     }
@@ -617,6 +617,14 @@ public class SummaryFrame extends JFrame {
             i++;
         }
         return ls;
+    }
+    
+    private static double getHours(long l) {
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(l);
+//        if (c.get(Calendar.MILLISECOND) >= 500) c.set(Calendar.SECOND, c.get(Calendar.SECOND) + 1);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTimeInMillis() / (1000.0 * 60 * 60);
     }
     
     private static Date createDay(Date d) {

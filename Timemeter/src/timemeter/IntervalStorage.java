@@ -41,6 +41,10 @@ class IntervalStorage {
         return new Interval().setBegin(runningInterval.getBegin()).setEnd(new Date()).getTime();
     }
     
+    public long getRunningTimeSum() {
+        return getTimeSum() + getRunningTime();
+    }
+    
     public static long getTimeSum(List<Interval> l) {
         long sum = 0;
         for (Interval i : l) {

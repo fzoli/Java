@@ -179,14 +179,6 @@ public class DetailsFrame extends Window {
         pack();
         setLocation(STORAGE.getFrameLocation(this));
     }
-
-    public double getAllHours() {
-        return getHours(startTime + additionalTime);
-    }
-    
-    public static double getHours(long l) {
-        return l / (1000.0 * 60 * 60);
-    }
     
     @Override
     public void paint(Graphics g) {
