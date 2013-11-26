@@ -216,6 +216,7 @@ public class DetailsFrame extends Window {
         if (!safe) {
             BT_START_STOP.setText(start ? "Stop" : "Start");
             Timemeter.paintTray(start);
+            Timemeter.getSummaryFrame().repaintIcon();
         }
     }
     

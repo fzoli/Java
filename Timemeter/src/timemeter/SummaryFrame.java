@@ -489,7 +489,6 @@ public class SummaryFrame extends JFrame {
 
             @Override
             public void contentsChanged(ListDataEvent e) {
-                repaintIcon();
                 refreshCurrency();
                 if (LIST_MODEL.fireTable) {
                     TABLE_MODEL.refresh();
@@ -541,7 +540,7 @@ public class SummaryFrame extends JFrame {
         super.setVisible(b);
     }
     
-    private void repaintIcon() {
+    public void repaintIcon() {
         setIconImage(Timemeter.getTrayImage());
     }
     
