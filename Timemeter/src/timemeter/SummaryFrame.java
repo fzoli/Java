@@ -509,38 +509,13 @@ public class SummaryFrame extends JFrame {
         });
     }
     
-    private final DecimalFormat DF_ROUNDER = new DecimalFormat("0.00");
-    
     public final void refreshCurrency() {
-        double money = getHours(-1) * TF_PRICE.getNumber();
+        double money = Timemeter.getDetailsFrame().getAllHours() * TF_PRICE.getNumber();
         LB_CURRENCY.setText(FMT_CURRENCY.format(round(money)));
         LB_CURRENCY.setToolTipText(FMT_CURRENCY.format(money));
     }
     
-    public final void refreshHours() {
-//        if (LIST_MODEL.getSize() > 0) {
-//            int index = LIST_MODEL.getSize() - 1;
-//            DayInfo i = LIST_MODEL.getElementAt(index);
-//            i.setHours(getHours(index)); // TODO: bugfix
-//            LIST_MODEL.refresh(false);
-//        }
-    }
-    
-    private double getHours(int index) {
-        double hours;
-        if (index == -1) {
-//            Iterator<DayInfo> it = SUMMARY.keySet().iterator();
-//            while (it.hasNext()) {
-//                DayInfo info = it.next();
-//                hours += info.getHours();
-//            }
-            hours = Timemeter.getDetailsFrame().getAllHours();
-        }
-        else {
-            hours = LIST_MODEL.getElementAt(index).hours + Timemeter.getDetailsFrame().getAdditionalHours();
-        }
-        return hours;
-    }
+    private final DecimalFormat DF_ROUNDER = new DecimalFormat("0.00");
     
     private int round(double d) {
         String str = DF_ROUNDER.format(d);

@@ -31,6 +31,15 @@ class IntervalStorage {
     private final StorageBean BEAN = load();
 
     private Interval runningInterval;
+
+    public Interval getRunningInterval() {
+        return runningInterval;
+    }
+    
+    public long getRunningTime() {
+        if (!isRunning()) return 0;
+        return new Interval().setBegin(runningInterval.getBegin()).setEnd(new Date()).getTime();
+    }
     
     public static long getTimeSum(List<Interval> l) {
         long sum = 0;

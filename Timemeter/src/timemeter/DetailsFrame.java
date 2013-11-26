@@ -31,40 +31,42 @@ public class DetailsFrame extends Window {
     
     private final Timer TIMER = new Timer(1000, new ActionListener() {
         
-        final int SAFE_COUNT = 600;
-        
-        int counter = 0;
+        final int REFR_COUNT = 5;
+        final int SAFE_COUNT = REFR_COUNT * 120;
+        final int MAX_DIST = REFR_COUNT * 2;
         
         @Override
         public void actionPerformed(ActionEvent e) {
             tickCounter++;
             additionalTime += TIMER.getDelay();
-            String txt = createTimeText(startTime + additionalTime);
+            long sumTime = startTime + additionalTime;
+            String txt = createTimeText(sumTime);
             LB_TIMER.setText(txt);
             Timemeter.setTrayToolTip(txt);
-            if (counter % 5 == 0) {
-                Timemeter.getSummaryFrame().refreshHours();
+            boolean b = true;
+            if (tickCounter % REFR_COUNT == 0) {
                 Timemeter.getSummaryFrame().refreshCurrency();
-//                final Interval iv = STORAGE.getIntervals().get(STORAGE.getIntervals().size() - 1);
-//                final long niceTime = new Interval().setBegin(iv.getBegin()).setEnd(new Date()).getTime();
-//                if (niceTime - (TIMER.getDelay() * 5 * 2) > additionalTime) {
-//                    new Thread(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            alertDelay(iv, niceTime);
-//                        }
-//                        
-//                    }).start();
-//                }
-//                additionalTime = niceTime;
+                final Interval iv = STORAGE.getRunningInterval();
+                final long runningTime = STORAGE.getRunningTime();
+                long summTime = runningTime + STORAGE.getTimeSum();
+                if (summTime - sumTime >= TIMER.getDelay() * MAX_DIST) {
+                    b = false;
+                    new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            alertDelay(iv, runningTime);
+                        }
+                        
+                    }).start();
+                }
+                additionalTime = Math.abs(summTime - startTime);
             }
-            if (++counter >= SAFE_COUNT) {
+            if (b && tickCounter % SAFE_COUNT == 0) {
                 if (!alertDelayVisible) {
                     startStop(false, true);
                     startStop(true, true);
                 }
-                counter = 0;
             }
         }
         
@@ -181,10 +183,6 @@ public class DetailsFrame extends Window {
     public double getAllHours() {
         return getHours(startTime + additionalTime);
     }
-
-    public double getAdditionalHours() {
-        return getHours(tickCounter * TIMER.getDelay());
-    }
     
     public static double getHours(long l) {
         return l / (1000.0 * 60 * 60);
@@ -212,10 +210,12 @@ public class DetailsFrame extends Window {
         if (start) TIMER.start();
         else TIMER.stop();
         tickCounter = 0;
+        if (!safe || start) {
+            SummaryFrame.refresh();
+        }
         if (!safe) {
             BT_START_STOP.setText(start ? "Stop" : "Start");
             Timemeter.paintTray(start);
-            SummaryFrame.refresh();
         }
     }
     
@@ -225,16 +225,19 @@ public class DetailsFrame extends Window {
         if (alertDelayVisible) return;
         alertDelayVisible = true;
         boolean b = showDialog("Időeltolódás", "Túl nagy időeltolódást észleltem a\n" + createTimeText(time) + " ideje indított mérésben.\n\nTöröljem az utolsó mérést?");
-        alertDelayVisible = false;
+        boolean running = STORAGE.isRunning();
+        if (running) startStop(false, true);
         if (b) {
-            boolean running = STORAGE.isRunning();
-            if (running) startStop(false, true);
             STORAGE.getIntervals().remove(iv);
+            startTime = STORAGE.getTimeSum();
             additionalTime = 0;
-            LB_TIMER.setText(createTimeText(startTime + additionalTime));
-            if (running) startStop(true, true);
-            SummaryFrame.refresh();
+            String txt = createTimeText(startTime);
+            LB_TIMER.setText(txt);
+            Timemeter.setTrayToolTip(txt);
         }
+        if (running) startStop(true, true);
+        else SummaryFrame.refresh();
+        alertDelayVisible = false;
     }
     
     void timeReset() {
