@@ -666,6 +666,7 @@ class JTextNumberField extends JTextField {
 
     private double number;
     private double min = 0, max = Double.MAX_VALUE;
+    private int precision = 5;
     
     public JTextNumberField(String s) {
         super(s);
@@ -681,6 +682,10 @@ class JTextNumberField extends JTextField {
     private void setNumber(double number) {
         this.number = number;
         onNumberChanged();
+    }
+    
+    public void setPrecisionLength(int precision) {
+        this.precision = precision;
     }
     
     protected void onNumberChanged() {
@@ -722,9 +727,14 @@ class JTextNumberField extends JTextField {
                     setNumber(0);
                     return true;
                 }
-                if (txt.startsWith(".")) return false;
+                if (txt.startsWith(".") || txt.startsWith("-")) return false;
                 try {
                     double d = Double.parseDouble(txt);
+                    int dotIndex = txt.indexOf('.');
+                    if (dotIndex > 0 && dotIndex < txt.length()) {
+                        String zs = txt.substring(dotIndex + 1);
+                        if (zs.length() > precision) return false;
+                    }
                     boolean ok = (d >= min && d <= max) && !txt.startsWith((int) d == 0 ? "00" : "0");
                     if (ok) setNumber(d);
                     return ok;
