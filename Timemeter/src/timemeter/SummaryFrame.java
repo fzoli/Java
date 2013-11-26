@@ -77,7 +77,17 @@ public class SummaryFrame extends JFrame {
     };
     
     private final JLabel LB_CURRENCY = new JLabel(FMT_CURRENCY.format(0), SwingConstants.RIGHT);
-    private final JLabel LB_CURRENCY_TIME = new JLabel(DetailsFrame.createTimeText(0, false), SwingConstants.RIGHT);
+    
+    private final JLabel LB_CURRENCY_TIME = new JLabel(DetailsFrame.createTimeText(0, false), SwingConstants.RIGHT) {
+        
+        @Override
+        public Dimension getMinimumSize() {
+            String s = getText() + " Munkaidő:";
+            Dimension d = super.getPreferredSize();
+            return new Dimension(getFontMetrics(getFont()).stringWidth(s), d.height);
+        }
+        
+    };
     
     private final JList<DayInfo> DAY_INFO_LIST = new JList<DayInfo>(LIST_MODEL) {
         {
@@ -369,7 +379,7 @@ public class SummaryFrame extends JFrame {
         }
         
         private void setTimeText(JLabel c, long l) {
-            c.setText(DetailsFrame.createFullTimeText(l, false));
+            c.setText(DetailsFrame.createFullTimeText(l, false, true));
         }
         
         @Override
@@ -442,7 +452,7 @@ public class SummaryFrame extends JFrame {
             
             @Override
             public Dimension getPreferredSize() {
-                return new Dimension(super.getPreferredSize().width, 200);
+                return new Dimension(getMinimumSize().width, 200);
             }
             
         }, cl);

@@ -277,9 +277,13 @@ public class DetailsFrame extends Window {
     }
     
     public static String createFullTimeText(long time, boolean detail) {
+        return createFullTimeText(time, detail, false);
+    }
+    
+    public static String createFullTimeText(long time, boolean detail, boolean fullAlways) {
         TimeInfo i = createTimeInfo(time);
         if (detail) return String.format("%02d.%03d", i.seconds, i.msec);
-        return String.format("%02d:%02d:%02d"+(i.msec > 0 ? ".%03d" : ""), i.hours, i.minutes, i.seconds, i.msec);
+        return String.format("%02d:%02d:%02d"+(fullAlways || i.msec > 0 ? ".%03d" : ""), i.hours, i.minutes, i.seconds, i.msec);
     }
     
     static TimeInfo createTimeInfo(long time) {
