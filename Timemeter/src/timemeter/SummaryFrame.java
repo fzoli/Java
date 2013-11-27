@@ -498,7 +498,9 @@ public class SummaryFrame extends JFrame {
             }
             
         }, cr);
-        add(new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel));
+        final JSplitPane sp;
+        add(sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel));
+        sp.setContinuousLayout(true);
         pack();
         setMinimumSize(getSize());
         setSize(400, 200);
@@ -511,6 +513,9 @@ public class SummaryFrame extends JFrame {
                 if (LIST_MODEL.fireTable) {
                     TABLE_MODEL.refresh();
                     INTERVAL_TABLE.revalidate();
+                }
+                if (LIST_MODEL.getSize() > 0 && DAY_INFO_LIST.getSelectedIndex() < 0) {
+                    DAY_INFO_LIST.setSelectedIndex(0);
                 }
             }
             
