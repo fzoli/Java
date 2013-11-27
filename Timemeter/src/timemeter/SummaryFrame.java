@@ -164,7 +164,7 @@ public class SummaryFrame extends JFrame {
             if (row < 0) return null;
             row = convertRowIndexToModel(row);
             long time = TABLE_MODEL.getIntervals().get(row).getTime();
-            if (time < 1000) return null;
+//            if (time < 1000) return null;
             return FMT_CURRENCY.format(getHours(time, false) * STORAGE.getPrice());
         }
         
