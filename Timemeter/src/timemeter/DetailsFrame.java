@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -62,8 +63,9 @@ public class DetailsFrame extends Window {
             }
             if (b && tickCounter % SAFE_COUNT == 0) {
                 if (!alertDelayVisible) {
-                    startStop(false, true);
-                    startStop(true, true);
+                    Date now = new Date();
+                    startStop(false, now);
+                    startStop(true, now);
                 }
             }
         }
@@ -202,11 +204,12 @@ public class DetailsFrame extends Window {
     }
     
     void startStop(boolean start) {
-        startStop(start, false);
+        startStop(start, null);
     }
     
-    private void startStop(boolean start, boolean safe) {
-        if (!safe || start && safe) STORAGE.setTimer(start, true);
+    private void startStop(boolean start, Date now) {
+        boolean safe = now != null;
+        if (!safe || start && safe) STORAGE.setTimer(start, true, now);
         if (start) TIMER.start();
         else TIMER.stop();
         tickCounter = 0;
@@ -225,16 +228,17 @@ public class DetailsFrame extends Window {
     private void alertDelay(Interval iv, long time) {
         if (alertDelayVisible) return;
         alertDelayVisible = true;
+        Date now = new Date();
         boolean b = showDialog("Időeltolódás", "Túl nagy időeltolódást észleltem a\n" + createTimeText(time, false) + " ideje indított mérésben.\n\nTöröljem az utolsó mérést?");
         boolean running = STORAGE.isRunning();
-        if (running) startStop(false, true);
+        if (running) startStop(false, now);
         if (b) {
             STORAGE.getIntervals().remove(iv);
             startTime = STORAGE.getTimeSum();
             additionalTime = 0;
             refreshCounterTime(startTime);
         }
-        if (running) startStop(true, true);
+        if (running) startStop(true, now);
         else SummaryFrame.refresh();
         alertDelayVisible = false;
     }

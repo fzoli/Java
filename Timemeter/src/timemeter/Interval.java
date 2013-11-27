@@ -5,6 +5,7 @@ import java.util.Date;
 class Interval {
     
     private Date begin, end;
+    private volatile Long time;
 
     public Interval() {
     }
@@ -18,6 +19,7 @@ class Interval {
     }
 
     public long getTime() {
+        if (time != null) return time;
         if (end == null || begin == null) return 0;
         return end.getTime() - begin.getTime();
     }
@@ -29,6 +31,11 @@ class Interval {
 
     public Interval setEnd(Date end) {
         this.end = end;
+        return this;
+    }
+
+    public Interval setTime(long time) {
+        this.time = time;
         return this;
     }
     

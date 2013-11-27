@@ -616,7 +616,7 @@ public class SummaryFrame extends JFrame {
         int i = 0;
         while (i < ls.size()) {
             Interval iv = ls.get(i);
-            if (iv.getBegin() == null || (iv.getEnd() != null && (iv.getTime() < 1000))) {
+            if (iv.getBegin() == null/* || (iv.getEnd() != null && (iv.getTime() < 1000))*/) {
                 ls.remove(i);
                 continue;
             }
@@ -631,7 +631,9 @@ public class SummaryFrame extends JFrame {
                     continue;
                 }
                 if (FMT_DAY_TIME.format(iv.getEnd()).equals(FMT_DAY_TIME.format(iv2.getBegin()))) {
-                    ls.set(i, new Interval().setBegin(iv.getBegin()).setEnd(iv2.getEnd()));
+                    Interval ni = new Interval().setBegin(iv.getBegin()).setEnd(iv2.getEnd());
+                    if (iv2.getEnd() != null) ni.setTime(iv.getTime() + iv2.getTime());
+                    ls.set(i, ni);
                     ls.remove(i + 1);
                     continue;
                 }

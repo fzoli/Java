@@ -6,7 +6,6 @@ import java.awt.Point;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +23,7 @@ class StorageBean {
 class IntervalStorage {
     
     private static final File STORE_FILE = createFile("timemeter.json"),
+                              STORE_BK_FILE = createFile("timemeter.bk.json"),
                               LOCK_FILE  = createFile("timemeter.lock");
     
     private static Boolean locked;
@@ -97,11 +97,21 @@ class IntervalStorage {
     }
     
     public IntervalStorage setTimer(boolean start, boolean save) {
-        return setTimer(start, true, save);
+        return setTimer(start, save, null);
     }
     
     public IntervalStorage setTimer(boolean start, boolean saveTimerState, boolean save) {
-        Date now = new Date();
+        return setTimer(start, saveTimerState, save, null);
+    }
+    
+    public IntervalStorage setTimer(boolean start, boolean save, Date now) {
+        return setTimer(start, true, save, now);
+    }
+    
+    public IntervalStorage setTimer(boolean start, boolean saveTimerState, boolean save, Date now) {
+        if (now == null) {
+            now = new Date();
+        }
         if (start) {
             if (runningInterval != null) runningInterval.setEnd(now);
             runningInterval = new Interval();
@@ -120,8 +130,15 @@ class IntervalStorage {
     }
     
     public boolean save() {
+        save(STORE_BK_FILE);
+        boolean b = save(STORE_FILE);
+        if (b) STORE_BK_FILE.delete();
+        return b;
+    }
+    
+    private boolean save(File f) {
         try {
-            FileWriter out = new FileWriter(STORE_FILE, false);
+            FileWriter out = new FileWriter(f, false);
             GSON.toJson(BEAN, out);
             out.close();
             return true;
@@ -132,14 +149,21 @@ class IntervalStorage {
     }
     
     private StorageBean load() {
-        StorageBean o = null;
+        StorageBean b = load(STORE_FILE);
+        if (b == null) b = load(STORE_BK_FILE);
+        if (b != null) {if (save(STORE_FILE)) STORE_BK_FILE.delete();}
+        else b = new StorageBean();
+        return b;
+    }
+    
+    private StorageBean load(File f) {
+        StorageBean o;
         try {
-            o = GSON.fromJson(new FileReader(STORE_FILE), StorageBean.class);
+            o = GSON.fromJson(new FileReader(f), StorageBean.class);
         }
         catch (Exception ex) {
-            ;
+            o = null;
         }
-        if (o == null) o = new StorageBean();
         return o;
     }
     
