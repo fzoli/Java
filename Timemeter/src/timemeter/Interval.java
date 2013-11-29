@@ -6,6 +6,8 @@ class Interval {
     
     private Date begin, end;
     private volatile Long time;
+    private String details;
+    private volatile Date genuineBegin;
 
     public Interval() {
     }
@@ -23,6 +25,11 @@ class Interval {
         if (end == null || begin == null) return 0;
         return end.getTime() - begin.getTime();
     }
+
+    public Date getGenuineBegin() {
+        if (genuineBegin == null) return getBegin();
+        return genuineBegin;
+    }
     
     public Interval setBegin(Date begin) {
         this.begin = begin;
@@ -36,6 +43,20 @@ class Interval {
 
     public Interval setTime(long time) {
         this.time = time;
+        return this;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public Interval setDetails(String details) {
+        this.details = details;
+        return this;
+    }
+
+    public Interval setGenuineBegin(Date genuineBegin) {
+        this.genuineBegin = genuineBegin;
         return this;
     }
     

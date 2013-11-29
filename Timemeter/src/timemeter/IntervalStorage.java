@@ -137,9 +137,13 @@ class IntervalStorage {
     }
     
     private boolean save(File f) {
+        return save(f, BEAN);
+    }
+    
+    private boolean save(File f, StorageBean bean) {
         try {
             FileWriter out = new FileWriter(f, false);
-            GSON.toJson(BEAN, out);
+            GSON.toJson(bean, out);
             out.close();
             return true;
         }
@@ -150,9 +154,15 @@ class IntervalStorage {
     
     private StorageBean load() {
         StorageBean b = load(STORE_FILE);
-        if (b == null) b = load(STORE_BK_FILE);
-        if (b != null) {if (save(STORE_FILE)) STORE_BK_FILE.delete();}
-        else b = new StorageBean();
+        if (b == null) {
+            b = load(STORE_BK_FILE);
+            if (b != null) {
+                if (save(STORE_FILE, b)) STORE_BK_FILE.delete();
+            }
+        }
+        if (b == null) {
+            b = new StorageBean();
+        }
         return b;
     }
     

@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.AbstractCellEditor;
 import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
@@ -37,6 +38,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -146,6 +148,16 @@ public class SummaryFrame extends JFrame {
             }
         }
 
+        @Override
+        public int convertRowIndexToModel(int index) {
+            try {
+                return super.convertRowIndexToModel(index);
+            }
+            catch (Exception ex) {
+                return -1;
+            }
+        }
+
     };
     
     private final JTable INTERVAL_TABLE = new JTable(TABLE_MODEL) {
@@ -156,6 +168,7 @@ public class SummaryFrame extends JFrame {
             setDefaultRenderer(Date.class, renderer);
             setDefaultRenderer(Long.class, renderer);
             setRowSorter(TABLE_SORTER);
+            getColumnModel().getColumn(0).setCellEditor(new SummaryTableCellEditor());
         }
 
         @Override
@@ -163,9 +176,20 @@ public class SummaryFrame extends JFrame {
             int row = rowAtPoint(event.getPoint());
             if (row < 0) return null;
             row = convertRowIndexToModel(row);
-            long time = TABLE_MODEL.getIntervals().get(row).getTime();
-//            if (time < 1000) return null;
-            return FMT_CURRENCY.format(getHours(time, false) * STORAGE.getPrice());
+            int col = columnAtPoint(event.getPoint());
+            if (col >= 0) col = convertColumnIndexToModel(col);
+            switch (col) {
+                case 0:
+                    Interval i = findStorageInterval(row);
+                    if (i != null && i.getDetails() != null) return i.getDetails();
+                    else return "Kattintson a részletek szerkesztéséhez.";
+                case 2:
+                    long time = TABLE_MODEL.getIntervals().get(row).getTime();
+//                    if (time < 1000) return null;
+                    return FMT_CURRENCY.format(getHours(time, false) * STORAGE.getPrice());
+                default:
+                    return null;
+            }
         }
         
     };
@@ -325,7 +349,7 @@ public class SummaryFrame extends JFrame {
 
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return false;
+            return columnIndex == 0;
         }
 
         @Override
@@ -430,6 +454,77 @@ public class SummaryFrame extends JFrame {
         
     }
     
+    private class SummaryTableCellEditor extends AbstractCellEditor implements TableCellEditor {
+
+        private int row, column;
+        private Interval interval;
+        private String loadedText;
+        
+        private final EditorComponent EC = new EditorComponent();
+        
+        private class EditorComponent extends JTextField {
+
+            private final static int MAX_DETAILS_LENGTH = 500;
+            
+            public EditorComponent() {
+                setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+                setHorizontalAlignment(SwingConstants.CENTER);
+                ((AbstractDocument) getDocument()).setDocumentFilter(new DocumentFilter() {
+
+                    @Override
+                    public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                        if (getText().length() + length < MAX_DETAILS_LENGTH) super.replace(fb, offset, length, text, attrs);
+                    }
+                    
+                });
+            }
+
+        }
+        
+        @Override
+        public Object getCellEditorValue() {
+            saveEditorComponent();
+            return null;
+        }
+
+        private void loadEditorComponent() {
+            switch (column) {
+                case 0:
+                    interval = findStorageInterval(row);
+                    EC.setText(loadedText = interval == null ? "" : (interval.getDetails() == null ? "" : interval.getDetails()));
+                    break;
+            }
+        }
+        
+        private void saveEditorComponent() {
+            switch (column) {
+                case 0:
+                    if (interval != null && !EC.getText().equals(loadedText)) {
+                        String txt = EC.getText().trim();
+                        if (txt.isEmpty()) {
+                            txt = null;
+                        }
+                        else {
+//                            if (!txt.endsWith(".")) txt += '.';
+                            if (!Character.isUpperCase(txt.charAt(0))) txt = txt.replaceFirst(""+txt.charAt(0), Character.toUpperCase(txt.charAt(0))+"");
+                        }
+                        interval.setDetails(txt);
+                        STORAGE.save();
+                    }
+                    break;
+            }
+        }
+        
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            this.row = table.convertRowIndexToModel(row);
+            this.column = table.convertColumnIndexToModel(column);
+            loadEditorComponent();
+            return EC;
+        }
+        
+    }
+    
     public SummaryFrame() {
         super("Összegzés");
         refreshCurrency();
@@ -526,6 +621,7 @@ public class SummaryFrame extends JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 TABLE_MODEL.refresh();
                 INTERVAL_TABLE.revalidate();
+                INTERVAL_TABLE.getColumnModel().getColumn(0).getCellEditor().stopCellEditing();
             }
             
         });
@@ -559,6 +655,23 @@ public class SummaryFrame extends JFrame {
         int rounded = (int) Double.parseDouble(sb.toString());
         if (upper) rounded += 10;
         return rounded;
+    }
+    
+    private Interval findStorageInterval(int row) {
+        Interval iv = TABLE_MODEL.getIntervals().get(row);
+        if (iv != null) {
+            Date d1 = iv.getGenuineBegin();
+            if (d1 != null) {
+                for (Interval i : STORAGE.getIntervals()) {
+                    Date d2 = i.getBegin();
+                    if (d2 == null) continue;
+                    if (d2.equals(d1)) {
+                        return i;
+                    }
+                }
+            }
+        }
+        return null;
     }
     
     @Override
@@ -600,7 +713,7 @@ public class SummaryFrame extends JFrame {
                     List<Interval> ls1 = SUMMARY.findList(i.getBegin());
                     List<Interval> ls2 = SUMMARY.findList(i.getEnd());
                     Interval i1 = new Interval().setBegin(i.getBegin()).setEnd(newDay);
-                    Interval i2 = new Interval().setBegin(newDay).setEnd(i.getEnd());
+                    Interval i2 = new Interval().setBegin(newDay).setEnd(i.getEnd()).setGenuineBegin(i.getBegin());
                     ls1.add(i1);
                     ls2.add(i2);
                 }
