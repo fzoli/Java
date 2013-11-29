@@ -181,7 +181,7 @@ public class SummaryFrame extends JFrame {
             switch (col) {
                 case 0:
                     Interval i = findStorageInterval(row);
-                    if (i != null && i.getDetails() != null) return i.getDetails();
+                    if (i != null && i.getDetails() != null) return i.getDetails() + (!i.getDetails().endsWith(".") ? "." : "");
                     else return "Kattintson a részletek szerkesztéséhez.";
                 case 2:
                     long time = TABLE_MODEL.getIntervals().get(row).getTime();
@@ -505,8 +505,7 @@ public class SummaryFrame extends JFrame {
                             txt = null;
                         }
                         else {
-//                            if (!txt.endsWith(".")) txt += '.';
-                            if (!Character.isUpperCase(txt.charAt(0))) txt = txt.replaceFirst(""+txt.charAt(0), Character.toUpperCase(txt.charAt(0))+"");
+                            if (!Character.isUpperCase(txt.charAt(0))) txt = txt.replaceFirst("" + txt.charAt(0), Character.toUpperCase(txt.charAt(0)) + "");
                         }
                         interval.setDetails(txt);
                         STORAGE.save();
