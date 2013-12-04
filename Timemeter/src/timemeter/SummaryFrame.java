@@ -185,7 +185,7 @@ public class SummaryFrame extends JFrame {
                     else return "Kattintson a részletek szerkesztéséhez.";
                 case 2:
                     long time = TABLE_MODEL.getIntervals().get(row).getTime();
-//                    if (time < 1000) return null;
+                    if (time <= 0) return null;
                     return FMT_CURRENCY.format(getHours(time, false) * STORAGE.getPrice());
                 default:
                     return null;
@@ -739,6 +739,10 @@ public class SummaryFrame extends JFrame {
             }
             if (iv.getEnd() == null) {
                 i++;
+                continue;
+            }
+            if (iv.getBegin().equals(iv.getEnd())) {
+                ls.remove(i);
                 continue;
             }
             if (i + 1 < ls.size()) {
