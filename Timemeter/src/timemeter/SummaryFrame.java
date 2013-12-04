@@ -696,11 +696,11 @@ public class SummaryFrame extends JFrame {
             SUMMARY.clear();
             List<Interval> ls = createMergedList();
             for (Interval i : ls) {
-                if (!SUMMARY.contains(i.getBegin())) {
+                if (i.getBegin() != null && !SUMMARY.contains(i.getBegin())) {
                     SUMMARY.put(new DayInfo(i.getBegin()), new ArrayList<Interval>());
-                    if (isDifferentDay(i)) {
-                        SUMMARY.put(new DayInfo(i.getEnd()), new ArrayList<Interval>());
-                    }
+                }
+                if (i.getEnd() != null && !SUMMARY.contains(i.getEnd())) {
+                    SUMMARY.put(new DayInfo(i.getEnd()), new ArrayList<Interval>());
                 }
             }
             for (Interval i : ls) {
@@ -714,7 +714,7 @@ public class SummaryFrame extends JFrame {
                     Interval i1 = new Interval().setBegin(i.getBegin()).setEnd(newDay);
                     Interval i2 = new Interval().setBegin(newDay).setEnd(i.getEnd()).setGenuineBegin(i.getBegin());
                     ls1.add(i1);
-                    ls2.add(i2);
+                    (ls2 != null ? ls2 : ls1).add(i2);
                 }
             }
             Iterator<Map.Entry<DayInfo, List<Interval>>> it = SUMMARY.entrySet().iterator();
