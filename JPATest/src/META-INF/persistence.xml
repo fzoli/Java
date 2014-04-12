@@ -3,15 +3,28 @@
   <persistence-unit name="JPATestPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test?zeroDateTimeBehavior=convertToNull"/>
+      
+      <!--
+        In MySQL:
+        create database test_db default charset utf8;
+        create user 'tester'@'%' identified by 'test';
+        grant all privileges on test_db.* to 'tester'@'%';
+      -->
+      
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/test_db?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8"/>
+      <property name="javax.persistence.jdbc.user" value="tester"/>
       <property name="javax.persistence.jdbc.password" value="test"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.user" value="test"/>
+      
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
-      <property name="hibernate.show_sql" value="true"/>
-      <property name="hibernate.hbm2ddl.auto" value="update"/>
-      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect"/>
+      
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
+      
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      
+      <property name="hibernate.show_sql" value="true"/>
+      
     </properties>
   </persistence-unit>
 </persistence>
