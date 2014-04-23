@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  
+    MySQL initial commands:
+    (URL: http://localhost/phpmyadmin/index.php)
+    
+      create database test_db default charset utf8;
+      create user 'tester'@'%' identified by 'test';
+      grant all privileges on test_db.* to 'tester'@'%';
+
+    GlassFish server settings:
+    (URL: http://localhost:4848/common/index.jsf)
+    
+    JDBC Connection Pool:
+      Pool Name: MySQL_test
+      Resource Type: java.sql.Driver
+      Classname: com.mysql.jdbc.Driver
+      Additional Properties:
+        URL: jdbc:mysql://localhost:3306/test_db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8
+        user: tester
+        password: test
+    
+    JDBC Resource:
+      JNDI Name: jdbc/test
+      Connection Pool: MySQL_test
+      
+-->
+
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="JPABeanTest-ejbPU" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>jdbc/test</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+      <property name="eclipselink.logging.level" value="FINE"/>
+    </properties>
+  </persistence-unit>
+</persistence>
