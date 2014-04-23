@@ -1,0 +1,12 @@
+A NetBeans Java Enterprise Application project using GlassFish webserver.
+
+In this project you can see 4 NetBeansProject:
+-ejb: contains an EJB that uses Entity classes with EclipseLink (JPA 2.1)
+-war: the web application project uses the EJB and JSF with PrimeFaces library
+-client: one-line client application
+-lib: library project for client project
+
+In this example I wrote a NodeModel for PrimeFaces' DefaultTreeNode.
+If the model is cached, it loads data from the database when a Node is expanded
+and clears invisible nodes when a node is collapsed.
+If the model is not cached, the whole tree will be loaded from the database and the JSF page won't use AJAX.
