@@ -12,7 +12,7 @@ import javax.jws.WebMethod;
  */
 @WebService(serviceName = "TestWebService", name = "Nodes")
 @Stateless()
-public class TestWebService {
+public class NodeTestWebService {
     
     @EJB
     private NodeTestBeanLocal ejbRef;
