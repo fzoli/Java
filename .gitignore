@@ -3,3 +3,10 @@
 /FerinekGrid/build/
 /JPATest/build/
 /JPATest/dist/
+/JEE/JPABeanTest/build/
+/JEE/JPABeanTest/JPABeanTest-ejb/build/
+/JEE/JPABeanTest/JPABeanTest-ejb/dist/
+/JEE/JPABeanTest/JPABeanTest-war/build/
+/JEE/JPABeanTest/JPABeanTest-war/dist/
+/JEE/JPABeanTest/JPABeanTest-lib/build
+/JEE/JPABeanTest/dist/
