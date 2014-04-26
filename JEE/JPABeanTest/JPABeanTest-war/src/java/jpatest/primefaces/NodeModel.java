@@ -12,6 +12,13 @@ import org.primefaces.model.TreeNode;
  */
 public class NodeModel {
     
+    public static void setNodeExpanded(TreeNode tn, boolean expanded) {
+        tn.setExpanded(expanded);
+        for (TreeNode n : tn.getChildren()) {
+            setNodeExpanded(n, expanded);
+        }
+    }
+    
     private static class MyTreeNode extends DefaultTreeNode {
         
         private final Node node;
@@ -76,15 +83,8 @@ public class NodeModel {
     private void unloadNode(TreeNode tn) {
         if (!cache || !chkNode(tn)) return;
         for (TreeNode n : tn.getChildren()) {
-            collapseNode(n);    
+            setNodeExpanded(n, false);
             n.getChildren().clear();
-        }
-    }
-    
-    private void collapseNode(TreeNode tn) {
-        tn.setExpanded(false);
-        for (TreeNode n : tn.getChildren()) {
-            collapseNode(n);
         }
     }
     

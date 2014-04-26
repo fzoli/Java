@@ -1,14 +1,16 @@
 package jpatest;
 
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;  
 import javax.faces.bean.SessionScoped;  
 import javax.faces.context.FacesContext;  
+import jmxtest.PrimeTree;
+import jpatest.primefaces.NodeModel;
 import org.primefaces.event.NodeCollapseEvent;
 import org.primefaces.event.NodeExpandEvent;
 import org.primefaces.model.TreeNode;
-import jpatest.primefaces.NodeModel;
 
 @SessionScoped
 @ManagedBean(name = "primeTree")
@@ -19,18 +21,28 @@ public class PrimeTreeBean {
     @EJB
     private NodeTestBeanLocal bean;
     
-    public PrimeTreeBean() {
-    }
+    private PrimeTree mbean = new PrimeTree(this);
     
+    public PrimeTreeBean() {
+        mbean.open();
+    }
+
+    @PreDestroy
+    private void close() {
+        mbean.close();
+    }
+
     public void onNodeExpand(NodeExpandEvent event) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Lenyitva", event.getTreeNode().toString());
         FacesContext.getCurrentInstance().addMessage(null, message);
+        mbean.onNodeChanged(event.getTreeNode().toString(), true);
         model.onNodeExpand(event);
     }
     
     public void onNodeCollapse(NodeCollapseEvent event) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Becsukva", event.getTreeNode().toString());
         FacesContext.getCurrentInstance().addMessage(null, message);
+        mbean.onNodeChanged(event.getTreeNode().toString(), false);
         model.onNodeCollapse(event);
     }
     

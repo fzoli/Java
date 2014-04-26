@@ -10,3 +10,11 @@ In this example I wrote a NodeModel for PrimeFaces' DefaultTreeNode.
 If the model is cached, it loads data from the database when a Node is expanded
 and clears invisible nodes when a node is collapsed.
 If the model is not cached, the whole tree will be loaded from the database and the JSF page won't use AJAX.
+
+In the war project I wrote an MBean that expands and collapses the non cached tree
+and sends notificaion if a node of the cached tree is changed by the user.
+You can test this bean if you connect to the application server with JConsole
+or other JMX-client and find jmxtest.PrimeTree.
+
+The EJB project contains a Web Service which WSDL URL is for example:
+http://localhost:8080/TestWebService/Nodes?wsdl
