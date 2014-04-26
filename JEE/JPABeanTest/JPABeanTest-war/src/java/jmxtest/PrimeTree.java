@@ -16,15 +16,16 @@ import jpatest.primefaces.NodeModel;
  */
 public class PrimeTree extends NotificationBroadcasterSupport implements PrimeTreeMBean {
 
+    private static final MBeanServer MBS = ManagementFactory.getPlatformMBeanServer();
+    
     private static final Object LOCK = new Object();
     private static int initCounter = 0;
     
-    private static final MBeanServer MBS = ManagementFactory.getPlatformMBeanServer();
+    private final PrimeTreeBean bean;
     
     private ObjectName name;
-    private int seqNum = 1;
     
-    private final PrimeTreeBean bean;
+    private int seqNum = 1;
     
     public PrimeTree(PrimeTreeBean bean) {
         this.bean = bean;
@@ -32,22 +33,24 @@ public class PrimeTree extends NotificationBroadcasterSupport implements PrimeTr
 
     public void open() {
         synchronized (LOCK) {
-            try {
+            if (name == null) try {
                 name = new ObjectName("jmxtest:type=PrimeTree,name=" + initCounter++);
                 MBS.registerMBean(this, name);
             }
             catch (Exception ex) {
-                ex.printStackTrace();
+                ;
             }
         }
     }
     
     public void close() {
-        try {
-            MBS.unregisterMBean(name);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
+        synchronized (LOCK) {
+            if (name != null) try {
+                MBS.unregisterMBean(name);
+            }
+            catch (Exception ex) {
+                ;
+            }
         }
     }
 

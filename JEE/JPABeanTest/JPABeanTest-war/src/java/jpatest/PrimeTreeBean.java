@@ -1,5 +1,6 @@
 package jpatest;
 
+import java.io.Serializable;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -14,7 +15,10 @@ import org.primefaces.model.TreeNode;
 
 @SessionScoped
 @ManagedBean(name = "primeTree")
-public class PrimeTreeBean {
+public class PrimeTreeBean implements Serializable {
+    
+// Implements Serializable to remove warning:
+// WARNING! Setting non-serializable attribute value into HttpSession (key: primeTree, value class: jpatest.PrimeTreeBean).
     
     private NodeModel model, fullModel;
     
