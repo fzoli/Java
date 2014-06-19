@@ -12,5 +12,8 @@
     <string name="msg_saved_already">The music data has been already saved.</string>
     <string name="msg_no_save">There is no data to save!</string>
     <string name="airing">On the air</string>
+    <string name="loading">Loading&#x2026;</string>
+    
+    <string name="from_code">[from code]</string>
 
 </resources>
