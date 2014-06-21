@@ -10,8 +10,8 @@ import android.widget.RemoteViews;
 
 public class WidgetProvider extends AppWidgetProvider {
 
-	private static final String SYNC_REFRESH_CLICKED = "automaticWidgetSyncRefreshButtonClick";
-	private static final String SYNC_SAVE_CLICKED = "automaticWidgetSyncSaveButtonClick";
+	private static final String REFRESH_CLICKED = "AndroidRadioInfo.RefreshButtonClick";
+	private static final String SAVE_CLICKED = "AndroidRadioInfo.SaveButtonClick";
 
 	private static ClassRadioInfoView criv;
 	
@@ -22,10 +22,6 @@ public class WidgetProvider extends AppWidgetProvider {
 	        final ComponentName watchWidget = new ComponentName(context, WidgetProvider.class);
 			criv = new ClassRadioInfoView(context) {
 				
-				private void updateWidget() {
-					appWidgetManager.updateAppWidget(watchWidget, remoteViews);
-				}
-				
 				@Override
 				protected void runOnUiThread(Runnable action) {
 					action.run();
@@ -35,13 +31,16 @@ public class WidgetProvider extends AppWidgetProvider {
 				@Override
 				protected void setTextViewText(int res, String txt) {
 					remoteViews.setTextViewText(res, txt);
-					refreshListeners();
 				}
 
 				@Override
 				protected void setViewVisibility(Integer viewId, int visibility) {
 					remoteViews.setViewVisibility(viewId, visibility);
+				}
+				
+				private void updateWidget() {
 					refreshListeners();
+					appWidgetManager.updateAppWidget(watchWidget, remoteViews);
 				}
 				
 				private void refreshListeners() {
@@ -49,41 +48,43 @@ public class WidgetProvider extends AppWidgetProvider {
 				}
 				
 			};
-			criv.setComponents(R.id.layout_progress, R.id.layout_song, R.id.layout_warn, R.id.tv_song_artist, R.id.tv_song_address, R.id.tv_msg);
+			criv.setComponents(R.id.layout_progress, R.id.layout_song, R.id.layout_warn, R.id.tv_song_addr, R.id.tv_song_artist, R.id.tv_msg);
 		}
 		return criv;
-	}
-	
-	private static void setListeners(Context context, RemoteViews remoteViews) {
-		remoteViews.setOnClickPendingIntent(R.id.btn_refresh, getPendingSelfIntent(context, SYNC_REFRESH_CLICKED));
-        remoteViews.setOnClickPendingIntent(R.id.btn_save, getPendingSelfIntent(context, SYNC_SAVE_CLICKED));
 	}
 	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
-		ComponentName watchWidget = new ComponentName(context, WidgetProvider.class);
-		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
-		setListeners(context, remoteViews);
-		appWidgetManager.updateAppWidget(watchWidget, remoteViews);
         getRadioInfoView(context).refresh();
 	}
 	
 	@Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        if (SYNC_SAVE_CLICKED.equals(intent.getAction())) {
+        if (SAVE_CLICKED.equals(intent.getAction())) {
         	getRadioInfoView(context).save();
         }
-        else if (SYNC_REFRESH_CLICKED.equals(intent.getAction())) {
+        else if (REFRESH_CLICKED.equals(intent.getAction())) {
         	getRadioInfoView(context).refresh();
         }
     }
 
+	private static void setListeners(Context context, RemoteViews remoteViews) {
+		remoteViews.setOnClickPendingIntent(R.id.btn_refresh, getPendingSelfIntent(context, REFRESH_CLICKED));
+        remoteViews.setOnClickPendingIntent(R.id.btn_save, getPendingSelfIntent(context, SAVE_CLICKED));
+        remoteViews.setOnClickPendingIntent(R.id.tv_song_addr, getPendingActivityIntent(context));
+//        remoteViews.setOnClickPendingIntent(R.id.tv_song_artist, getPendingActivityIntent(context));
+	}
+	
     private static PendingIntent getPendingSelfIntent(Context context, String action) {
         Intent intent = new Intent(context, WidgetProvider.class);
         intent.setAction(action);
         return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
 	
+    private static PendingIntent getPendingActivityIntent(Context context) {
+    	return PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
+    }
+    
 }

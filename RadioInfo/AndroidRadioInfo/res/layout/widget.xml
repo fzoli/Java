@@ -19,21 +19,25 @@
 	    android:orientation="vertical">
     
         <TextView
-	      android:id="@+id/tv_song_artist"
+	      android:id="@+id/tv_song_addr"
 	      android:text="@string/from_code"
 	      android:textAppearance="?android:attr/textAppearanceMedium"
+	      android:textColorHighlight="@color/widget_highlight_text"
 	      android:gravity="bottom"
-	      android:layout_width="fill_parent"
+	      android:singleLine="true"
+	      android:layout_width="wrap_content"
 	      android:layout_height="wrap_content"
 	      android:layout_weight="1"
 	       />
         
         <TextView
-	      android:id="@+id/tv_song_address"
+	      android:id="@+id/tv_song_artist"
 	      android:text="@string/from_code"
 	      android:textAppearance="?android:attr/textAppearanceSmall"
+	      android:textColorHighlight="@color/widget_highlight_text"
+	      android:singleLine="true"
 	      android:gravity="top"
-	      android:layout_width="fill_parent"
+	      android:layout_width="wrap_content"
 	      android:layout_height="wrap_content"
 	      android:layout_weight="1" />
         

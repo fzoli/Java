@@ -685,10 +685,11 @@ containing a value of this type.
         public static final int abs__bright_foreground_inverse_holo_dark=0x7f070006;
         public static final int abs__bright_foreground_inverse_holo_light=0x7f070007;
         public static final int abs__holo_blue_light=0x7f070008;
-        public static final int abs__primary_text_disable_only_holo_dark=0x7f070009;
-        public static final int abs__primary_text_disable_only_holo_light=0x7f07000a;
-        public static final int abs__primary_text_holo_dark=0x7f07000b;
-        public static final int abs__primary_text_holo_light=0x7f07000c;
+        public static final int abs__primary_text_disable_only_holo_dark=0x7f07000a;
+        public static final int abs__primary_text_disable_only_holo_light=0x7f07000b;
+        public static final int abs__primary_text_holo_dark=0x7f07000c;
+        public static final int abs__primary_text_holo_light=0x7f07000d;
+        public static final int widget_highlight_text=0x7f070009;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -1004,8 +1005,8 @@ containing a value of this type.
         public static final int textView2=0x7f050039;
         public static final int textViewMsg=0x7f050036;
         public static final int tv_msg=0x7f05003e;
-        public static final int tv_song_address=0x7f05003c;
-        public static final int tv_song_artist=0x7f05003b;
+        public static final int tv_song_addr=0x7f05003b;
+        public static final int tv_song_artist=0x7f05003c;
         public static final int useLogo=0x7f050004;
         public static final int wrap_content=0x7f050000;
     }
