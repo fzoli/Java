@@ -26,6 +26,10 @@ public abstract class ClassRadioInfoView implements RadioInfoView {
 		CTX = ctx;
 	}
 
+	protected Context getContext() {
+		return CTX;
+	}
+	
 	public void setComponents(Integer progressBar, Integer scrollView, Integer linearLayoutMsg,
 			int textView1, int textView2, int textViewMsg) {
 		this.progressBar = progressBar;

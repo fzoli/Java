@@ -35,11 +35,17 @@ public class WidgetProvider extends AppWidgetProvider {
 				@Override
 				protected void setTextViewText(int res, String txt) {
 					remoteViews.setTextViewText(res, txt);
+					refreshListeners();
 				}
 
 				@Override
 				protected void setViewVisibility(Integer viewId, int visibility) {
 					remoteViews.setViewVisibility(viewId, visibility);
+					refreshListeners();
+				}
+				
+				private void refreshListeners() {
+					setListeners(getContext(), remoteViews);
 				}
 				
 			};
@@ -48,17 +54,18 @@ public class WidgetProvider extends AppWidgetProvider {
 		return criv;
 	}
 	
+	private static void setListeners(Context context, RemoteViews remoteViews) {
+		remoteViews.setOnClickPendingIntent(R.id.btn_refresh, getPendingSelfIntent(context, SYNC_REFRESH_CLICKED));
+        remoteViews.setOnClickPendingIntent(R.id.btn_save, getPendingSelfIntent(context, SYNC_SAVE_CLICKED));
+	}
+	
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		ComponentName watchWidget = new ComponentName(context, WidgetProvider.class);
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
-		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(watchWidget);
-		for (int widgetId : allWidgetIds) {
-			remoteViews.setOnClickPendingIntent(R.id.btn_refresh, getPendingSelfIntent(context, SYNC_REFRESH_CLICKED));
-	        remoteViews.setOnClickPendingIntent(R.id.btn_save, getPendingSelfIntent(context, SYNC_SAVE_CLICKED));
-	        appWidgetManager.updateAppWidget(widgetId, remoteViews);
-		}
+		setListeners(context, remoteViews);
+		appWidgetManager.updateAppWidget(watchWidget, remoteViews);
         getRadioInfoView(context).refresh();
 	}
 	
