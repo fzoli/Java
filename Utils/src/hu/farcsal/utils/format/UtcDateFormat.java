@@ -1,6 +1,7 @@
 package hu.farcsal.utils.format;
 
 import java.text.DateFormat;
+import java.text.FieldPosition;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,6 +16,8 @@ public class UtcDateFormat extends SimpleDateFormat {
     
     private static final long serialVersionUID = -8275126788734707527L;
     
+    private static final TimeZone TZ_UTC = TimeZone.getTimeZone("UTC");
+    
     public enum UseCase {
         FORMAT, PARSE_DATE, PARSE_DATE_TIME
     }
@@ -23,31 +26,49 @@ public class UtcDateFormat extends SimpleDateFormat {
     private final DateFormat localDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     
     private final int millisLength;
-    private final boolean strictMode;
+    private final boolean strictMode, utcOutput;
+    
+    private DateFormat utcFormatter;
     
     public UtcDateFormat() {
-    	this(false);
+    	this(true);
     }
     
-    public UtcDateFormat(boolean keepTimeZone) {
-    	this(keepTimeZone, true);
+    public UtcDateFormat(boolean utcOutput) {
+    	this(utcOutput, true);
     }
     
-    public UtcDateFormat(boolean keepTimeZone, boolean withMillis) {
-    	this(keepTimeZone, withMillis ? 3 : 0);
+    public UtcDateFormat(boolean utcOutput, boolean withMillis) {
+    	this(utcOutput, withMillis ? 3 : 0);
     }
     
-    public UtcDateFormat(boolean keepTimeZone, int millisLength) {
-    	this(false, keepTimeZone, millisLength);
+    public UtcDateFormat(boolean utcOutput, int millisLength) {
+    	this(false, utcOutput, millisLength);
     }
     
-    public UtcDateFormat(boolean strictMode, boolean keepTimeZone, int millisLength) {
+    public UtcDateFormat(boolean strictMode, boolean utcOutput, int millisLength) {
     	super("yyyy-MM-dd'T'HH:mm:ss" + millis(millisLength, false) + "Z", Locale.ENGLISH);
-        if (!keepTimeZone) setTimeZone(TimeZone.getTimeZone("UTC"));
     	this.millisLength = millisLength;
         this.strictMode = strictMode;
+        this.utcOutput = utcOutput;
     }
-
+    
+    private UtcDateFormat(UtcDateFormat df) {
+        this(df.strictMode, df.utcOutput, df.millisLength);
+    }
+    
+    private DateFormat getUtcTimeZoneFormatter() {
+        if (isUtcTimeZoneUsed()) return this;
+        if (utcFormatter != null) return utcFormatter;
+        DateFormat df = new UtcDateFormat(this);
+        df.setTimeZone(TZ_UTC);
+        return utcFormatter = df;
+    }
+    
+    private boolean isUtcTimeZoneUsed() {
+        return getTimeZone().equals(TZ_UTC);
+    }
+    
     @Override
     public void setTimeZone(TimeZone zone) {
         super.setTimeZone(zone);
@@ -55,8 +76,8 @@ public class UtcDateFormat extends SimpleDateFormat {
     }
     
     @Override
-    public StringBuffer format(Date date, StringBuffer toAppendTo, java.text.FieldPosition pos)
-    {
+    public StringBuffer format(Date date, StringBuffer toAppendTo, FieldPosition pos) {
+        if (utcOutput) return getUtcTimeZoneFormatter().format(date, toAppendTo, pos);
         final StringBuffer buf = super.format(checkDate(UseCase.FORMAT, date), toAppendTo, pos);
         return new StringBuffer(buf.toString().replaceFirst("\\+0000", "Z")); // replace '+0000' to 'Z' (optional)
     }
