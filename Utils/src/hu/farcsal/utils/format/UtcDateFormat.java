@@ -1,6 +1,7 @@
 package hu.farcsal.utils.format;
 
 import java.text.DateFormat;
+import java.text.FieldPosition;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,14 +56,13 @@ public class UtcDateFormat extends SimpleDateFormat {
     }
     
     @Override
-    public StringBuffer format(Date date, StringBuffer toAppendTo, java.text.FieldPosition pos)
-    {
+    public StringBuffer format(Date date, StringBuffer toAppendTo, FieldPosition pos) {
         final StringBuffer buf = super.format(checkDate(UseCase.FORMAT, date), toAppendTo, pos);
         return new StringBuffer(buf.toString().replaceFirst("\\+0000", "Z")); // replace '+0000' to 'Z' (optional)
     }
 
     @Override
-    public Date parse(String source) throws java.text.ParseException {
+    public Date parse(String source) throws ParseException {
         if (!strictMode && !source.contains("T")) return checkDate(UseCase.PARSE_DATE, localDateFormat.parse(source)); // parse as short local date if the source is just a date without time
         source = source.replaceFirst("(.*)(Z| UTC)$", "$1+0000"); // replace 'Z' and ' UTC' to '+0000'
         source = source.replaceFirst("(.*[\\+-])([0-9]{2}):([0-9]{2})$", "$1$2$3"); // replace '+00:00' to '+0000'
