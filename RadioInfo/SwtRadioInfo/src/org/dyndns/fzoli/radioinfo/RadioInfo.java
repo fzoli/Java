@@ -1,23 +1,17 @@
 package org.dyndns.fzoli.radioinfo;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
-//import org.dyndns.fzoli.radioinfo.desktop.resource.CharsetUtils;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.Charset;
 
 /**
  * A rádió HTML válaszából készít zene objektumot és kérésre fájlba menti.
  * @author zoli
  */
 public abstract class RadioInfo {
-    
-//    /**
-//     * A számcímeket tároló fájlba mentéshez ismerni kell a fájl kódolását, mielőtt mentünk bele.
-//     * A kódolás lehet UTF-8 illetve ISO-8859-2; más kódolás nem támogatott.
-//     * Ha a fájl nem létezik, a rendszer alapértelmezett kódolása lesz használva.
-//     */
-//    private static final CharsetUtils CHARSET_UTILS = new CharsetUtils(new String[] {"UTF-8", "ISO-8859-2"});
     
     /**
      * A zene objektum referenciája.
@@ -122,8 +116,7 @@ public abstract class RadioInfo {
         if (!isSaveAvailable()) return SaveResult.DISABLED;
         if (isSaved()) return SaveResult.ALREADY_SAVED;
         try {
-//            if (!CHARSET_UTILS.saveToFile(getMusic().getText() + "\r\n", LOADER.getStoreFile(), true)) return SaveResult.ERROR;
-            BufferedWriter out = new BufferedWriter(new FileWriter(LOADER.getStoreFile(), true));
+            Writer out = new OutputStreamWriter(new FileOutputStream(LOADER.getStoreFile(), true), Charset.forName("UTF-8").newEncoder());
             out.write(getMusic().getText() + "\r\n");
             out.flush();
             out.close();

@@ -34,7 +34,7 @@ public class ClassRadioInfo extends RadioInfo {
     
     @Override
     protected Music createMusic(byte[] src) {
-        Matcher m = PATTERN.matcher(toString(src, "iso8859-2", "<article", "</article>"));
+        Matcher m = PATTERN.matcher(toString(src, "UTF-8", "<article", "</article>"));
         if (m.find()) {
             return new ClassMusic(m.group(2), m.group(1));
         }

@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+
+def getStorePasswordProp() {
+    return hasProperty('FZoli.storepass') ? getProperty('FZoli.storepass') : ""
+}
+
+def getKeyAliasProp() {
+    return hasProperty('FZoli.alias') ? getProperty('FZoli.alias') : ""
+}
+
+def getKeyPasswordProp() {
+    return hasProperty('FZoli.keypass') ? getProperty('FZoli.keypass') : ""
+}
+
+group = 'hu.farcsal.android.app'
+version = getProperty('classfminfo.version')
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    //compile 'com.android.support:support-v4:18.0.+'
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId 'org.dyndns.fzoli.radioinfo.android'
+        minSdkVersion 7
+        targetSdkVersion 21
+        versionCode project.getProperty('classfminfo.androidVersionCode').toInteger()
+        versionName project.version // Flavors override this
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('android-release-key.keystore')
+            storePassword getStorePasswordProp()
+            keyAlias getKeyAliasProp()
+            keyPassword getKeyPasswordProp()
+        }
+    }
+
+    buildTypes {
+        debug {
+
+        }
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    productFlavors {
+        live { versionName "${project.version}" }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/ASL2.0'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+}
