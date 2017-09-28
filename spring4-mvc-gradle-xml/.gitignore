@@ -1,0 +1,74 @@
+### Unit test log files (Slf4j logger)
+**/catalina.home_IS_UNDEFINED/logs/connect
+
+## DB Updater log file
+**/db-updater.log
+
+### Eclipse template
+*.pydevproject
+.metadata
+.gradle
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+
+# Eclipse Core
+.project
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
+# Java annotation processor (APT)
+.factorypath
+
+# PDT-specific
+.buildpath
+
+# sbteclipse plugin
+.target
+
+# TeXlipse plugin
+.texlipse
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+### Maven template
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# JRebel
+**/resources/rebel.xml
+
+
+# Gradle files
+.gradle/
+build/
+
+# Log Files
+*.log
+
