@@ -32,6 +32,7 @@ public class WelcomeController {
 		model.put("title", helloWorldService.getTitle(""));
 		model.put("msg", helloWorldService.getDesc());
 		model.put("appVersion", AppVersion.getInstance().getShortVersion());
+		model.put("commitYear", AppVersion.getInstance().getCommitTime().getYear());
 		
 		return "index";
 	}
