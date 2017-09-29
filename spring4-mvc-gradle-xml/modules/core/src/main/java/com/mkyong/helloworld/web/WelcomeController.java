@@ -1,7 +1,10 @@
 package com.mkyong.helloworld.web;
 
+import com.google.common.collect.ImmutableList;
+import com.mkyong.helloworld.repository.ProjectModuleRepository;
 import com.mkyong.helloworld.service.HelloWorldService;
 import com.mkyong.helloworld.util.AppVersion;
+import com.mkyong.helloworld.util.ProjectModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ public class WelcomeController {
 	private final HelloWorldService helloWorldService;
 
 	@Autowired
+	private ProjectModuleRepository projectModuleRepository;
+
+	@Autowired
 	public WelcomeController(HelloWorldService helloWorldService) {
 		this.helloWorldService = helloWorldService;
 	}
@@ -33,6 +39,7 @@ public class WelcomeController {
 		model.put("msg", helloWorldService.getDesc());
 		model.put("appVersion", AppVersion.getInstance().getShortVersion());
 		model.put("commitYear", AppVersion.getInstance().getCommitTime().getYear());
+		model.put("moduleNames", createModuleNames());
 		
 		return "index";
 	}
@@ -50,6 +57,12 @@ public class WelcomeController {
 		
 		return model;
 
+	}
+
+	private String createModuleNames() {
+		return String.join(", ", projectModuleRepository.getProjectModules().stream()
+				.map(ProjectModule::getModuleName)
+				.collect(ImmutableList.toImmutableList()));
 	}
 
 }

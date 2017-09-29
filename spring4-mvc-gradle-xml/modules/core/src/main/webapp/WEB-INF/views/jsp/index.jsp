@@ -65,7 +65,7 @@
 
 	<hr>
 	<footer>
-		<p>&copy; Mkyong.com ${commitYear} - v${appVersion}</p>
+		<p>&copy; Mkyong.com ${commitYear} - v${appVersion} - modules: ${moduleNames}</p>
 	</footer>
 </div>
 
