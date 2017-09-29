@@ -9,8 +9,13 @@ ext {
 	// Open the Git repository.
 	git = grgit.open()
 
-	// Get commit id of HEAD.
+	// Get some info from Git.
 	revision = git.head().id
+	dirty = !grgit.status().clean
+	commitTime = git.head().dateTime.toInstant().toEpochMilli()
+
+	// Build time
+	buildTime = System.currentTimeMillis()
 }
 
 buildConfig {
@@ -25,10 +30,19 @@ buildConfig {
 
 	// Custom variables
 
-	def TYPE_STRING = "String"
+	def TYPE_STRING = 'String'
+	def TYPE_BOOLEAN = 'boolean'
+	def TYPE_INSTANT = 'java.time.Instant'
+
 	def FIELD_REVISION = "REVISION"
+	def FIELD_DIRTY = "DIRTY"
+	def FIELD_COMMIT_INSTANT = "COMMIT_INSTANT"
+	def FIELD_BUILD_INSTANT = "BUILD_INSTANT"
 
 	buildConfigField TYPE_STRING, FIELD_REVISION, revision
+	buildConfigField TYPE_BOOLEAN, FIELD_DIRTY, booleanToBuildConfig(dirty)
+	buildConfigField TYPE_INSTANT, FIELD_COMMIT_INSTANT, longToBuildConfigAsInstant(commitTime)
+	buildConfigField TYPE_INSTANT, FIELD_BUILD_INSTANT, longToBuildConfigAsInstant(buildTime)
 
 }
 
@@ -36,4 +50,12 @@ dependencies {
 	compile 'ch.qos.logback:logback-classic:1.1.3'
 	compile 'org.springframework:spring-webmvc:4.1.6.RELEASE'
 	compile 'javax.servlet:jstl:1.2'
+}
+
+static longToBuildConfigAsInstant(long value) {
+	return 'java.time.Instant.ofEpochMilli(' + value + 'L)'
+}
+
+static booleanToBuildConfig(boolean value) {
+	return Boolean.toString(value)
 }

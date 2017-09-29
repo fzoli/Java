@@ -1,7 +1,7 @@
 package com.mkyong.helloworld.web;
 
-import com.mkyong.BuildConfig;
 import com.mkyong.helloworld.service.HelloWorldService;
+import com.mkyong.helloworld.util.AppVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class WelcomeController {
 
 		model.put("title", helloWorldService.getTitle(""));
 		model.put("msg", helloWorldService.getDesc());
-		model.put("revision", BuildConfig.REVISION);
+		model.put("appVersion", AppVersion.getInstance().getShortVersion());
 		
 		return "index";
 	}
