@@ -1,17 +1,15 @@
 package com.mkyong.helloworld.util;
 
 import com.mkyong.BuildConfig;
+import lombok.Getter;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
 public class AppVersion {
 
+    @Getter
     private static final AppVersion instance = new AppVersion();
-
-    public static AppVersion getInstance() {
-        return instance;
-    }
 
     private AppVersion() {
     }
