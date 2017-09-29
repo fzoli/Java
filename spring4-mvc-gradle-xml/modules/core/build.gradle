@@ -17,7 +17,7 @@ buildConfig {
 
 	// Predefined variables
 
-	packageName = 'org.sample'
+	packageName = project.group
 	appName = project.name
 	version = project.version
 	clsName = 'BuildConfig'

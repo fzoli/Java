@@ -21,6 +21,9 @@ buildscript {
 
 allprojects {
 
+    group = 'com.mkyong'
+    version = property('Spring4MvcGradle.versionName')
+
     repositories {
         maven { url "https://maven.fabric.io/public" }
         maven { url "http://dl.bintray.com/populov/maven" }

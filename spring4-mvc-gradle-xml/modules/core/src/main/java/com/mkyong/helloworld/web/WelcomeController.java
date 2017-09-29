@@ -1,5 +1,6 @@
 package com.mkyong.helloworld.web;
 
+import com.mkyong.BuildConfig;
 import com.mkyong.helloworld.service.HelloWorldService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ public class WelcomeController {
 
 		model.put("title", helloWorldService.getTitle(""));
 		model.put("msg", helloWorldService.getDesc());
-		model.put("revision", org.sample.BuildConfig.REVISION);
+		model.put("revision", BuildConfig.REVISION);
 		
 		return "index";
 	}
