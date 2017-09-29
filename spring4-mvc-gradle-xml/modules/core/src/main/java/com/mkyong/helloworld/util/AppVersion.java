@@ -15,7 +15,7 @@ public class AppVersion {
     }
 
     public String getShortVersion() {
-        return BuildConfig.VERSION + "-" + BuildConfig.REVISION.substring(0, 6);
+        return BuildConfig.VERSION + "-" + BuildConfig.REVISION.substring(0, 6) + (BuildConfig.DIRTY ? "-dirty" : "");
     }
 
     public OffsetDateTime getCommitTime() {
