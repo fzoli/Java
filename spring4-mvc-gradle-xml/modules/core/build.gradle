@@ -1,6 +1,12 @@
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'com.gorylenko.gradle-git-properties'
+
+gitProperties {
+	dateFormat = "yyyy-MM-dd'T'HH:mmZ"
+	dateFormatTimeZone = "PST"
+}
 
 dependencies {
 	compile 'ch.qos.logback:logback-classic:1.1.3'

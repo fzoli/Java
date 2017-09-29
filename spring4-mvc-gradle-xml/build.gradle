@@ -10,6 +10,7 @@ buildscript {
 
     dependencies {
         classpath "gradle.plugin.org.akhikhl.gretty:gretty:2.0.0"
+        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.17"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
