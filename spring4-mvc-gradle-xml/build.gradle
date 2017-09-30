@@ -21,6 +21,8 @@ buildscript {
 
 allprojects {
 
+    apply plugin: 'idea'
+
     group = 'com.mkyong'
     version = property('Spring4MvcGradle.versionName')
 
