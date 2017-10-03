@@ -4,4 +4,11 @@ apply plugin: 'org.akhikhl.gretty'
 
 gretty {
   overlay ':core'
+  overlay ':sample'
+  overlay ':coreMySql'
+  overlay ':sampleMySql'
+}
+
+war {
+  archiveName 'sample.war'
 }
