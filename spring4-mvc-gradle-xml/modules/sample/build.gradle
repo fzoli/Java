@@ -5,3 +5,7 @@ apply plugin: 'org.akhikhl.gretty'
 gretty {
   overlay ':core'
 }
+
+war {
+  archiveName 'sample.war'
+}
