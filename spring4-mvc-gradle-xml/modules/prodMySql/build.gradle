@@ -10,5 +10,5 @@ gretty {
 }
 
 war {
-  archiveName 'sample.war'
+  archiveName 'prod-mysql.war'
 }
