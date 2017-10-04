@@ -5,7 +5,7 @@ import com.mkyong.helloworld.util.PackageModule;
 import com.mkyong.helloworld.util.PackageModuleDescriptor;
 
 @PackageModuleDescriptor
-public class ProdMySqlProjectModule implements PackageModule {
+public class ProdMySqlPackageModule implements PackageModule {
 
     @Override
     public String getModuleName() {
