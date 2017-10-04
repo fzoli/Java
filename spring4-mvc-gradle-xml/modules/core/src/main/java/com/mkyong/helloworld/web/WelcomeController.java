@@ -1,11 +1,8 @@
 package com.mkyong.helloworld.web;
 
-import com.google.common.collect.ImmutableList;
-import com.mkyong.helloworld.repository.ProjectModuleRepository;
 import com.mkyong.helloworld.service.HelloWorldService;
+import com.mkyong.helloworld.service.ModuleService;
 import com.mkyong.helloworld.util.AppVersion;
-import com.mkyong.helloworld.util.DatabaseModule;
-import com.mkyong.helloworld.util.ProjectModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 public class WelcomeController {
@@ -25,7 +21,7 @@ public class WelcomeController {
 	private final HelloWorldService helloWorldService;
 
 	@Autowired
-	private ProjectModuleRepository projectModuleRepository;
+	private ModuleService moduleService;
 
 	@Autowired
 	public WelcomeController(HelloWorldService helloWorldService) {
@@ -41,7 +37,7 @@ public class WelcomeController {
 		model.put("msg", helloWorldService.getDesc());
 		model.put("appVersion", AppVersion.getInstance().getShortVersion());
 		model.put("commitYear", AppVersion.getInstance().getCommitTime().getYear());
-		model.put("moduleNames", createModuleNames());
+		model.put("moduleNames", moduleService.createProjectModuleStrings());
 		
 		return "index";
 	}
@@ -59,19 +55,6 @@ public class WelcomeController {
 		
 		return model;
 
-	}
-
-	private String createModuleNames() {
-		return String.join(", ", projectModuleRepository.getProjectModules().stream()
-				.map(this::createModuleName)
-				.collect(ImmutableList.toImmutableList()));
-	}
-
-	private String createModuleName(ProjectModule pm) {
-		Optional<DatabaseModule> dbModule = projectModuleRepository.getDatabaseModule(pm);
-		return dbModule
-				.map(databaseModule -> pm.getModuleName() + "(" + databaseModule.getDatabaseType().name() + ")")
-				.orElseGet(pm::getModuleName);
 	}
 
 }

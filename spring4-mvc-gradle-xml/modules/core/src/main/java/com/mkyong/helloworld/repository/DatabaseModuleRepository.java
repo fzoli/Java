@@ -3,6 +3,7 @@ package com.mkyong.helloworld.repository;
 import com.google.common.collect.ImmutableList;
 import com.mkyong.helloworld.util.DatabaseModule;
 import com.mkyong.helloworld.util.DatabaseModuleDescriptor;
+import com.mkyong.helloworld.util.ModuleResolver;
 import lombok.Synchronized;
 import org.springframework.stereotype.Repository;
 

@@ -14,7 +14,7 @@ public class CoreMySqlDatabaseModule implements DatabaseModule {
 
     @Override
     public DatabaseType getDatabaseType() {
-        return DatabaseType.MYSQL;
+        return DatabaseType.MY_SQL;
     }
 
 }

@@ -4,7 +4,7 @@ public interface DatabaseModule {
 
     enum DatabaseType {
         ORACLE,
-        MYSQL,
+        MY_SQL,
     }
 
     Class<? extends ProjectModule> getProjectModuleClass();
