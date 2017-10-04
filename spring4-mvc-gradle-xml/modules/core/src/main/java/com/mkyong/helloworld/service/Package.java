@@ -43,6 +43,23 @@ public final class Package {
         @Nonnull
         private final DatabaseType databaseType;
 
+        public String getFriendlyDatabaseTypeName() {
+            return Package.getFriendlyDatabaseTypeName(databaseType);
+        }
+
+    }
+
+    /**
+     * Returns the first database module defined in the project modules.
+     * @return empty if no database module is found; otherwise the database module
+     */
+    public Optional<DatabaseModule> getDatabaseModule() {
+        for (ProjectModule pm : projectModules) {
+            if (pm.getDatabaseModule() != null) {
+                return Optional.of(pm.getDatabaseModule());
+            }
+        }
+        return Optional.empty();
     }
 
     /**
@@ -60,11 +77,11 @@ public final class Package {
     private String createProjectModuleString(ProjectModule pm) {
         Optional<Package.DatabaseModule> dbModule = Optional.ofNullable(pm.getDatabaseModule());
         return dbModule
-                .map(databaseModule -> pm.getName() + "(" + formatDatabaseType(databaseModule.getDatabaseType()) + ")")
+                .map(databaseModule -> pm.getName() + "(" + getFriendlyDatabaseTypeName(databaseModule.getDatabaseType()) + ")")
                 .orElseGet(pm::getName);
     }
 
-    private String formatDatabaseType(DatabaseType databaseType) {
+    private static String getFriendlyDatabaseTypeName(DatabaseType databaseType) {
         return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, databaseType.name());
     }
 

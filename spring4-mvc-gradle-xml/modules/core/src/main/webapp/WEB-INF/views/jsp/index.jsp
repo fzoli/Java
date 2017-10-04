@@ -3,78 +3,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Gradle + Spring MVC</title>
-
-<spring:url value="/resources/core/css/hello.css" var="coreCss" />
-<spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
-<link href="${bootstrapCss}" rel="stylesheet" />
-<link href="${coreCss}" rel="stylesheet" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Connect Service">
+	<meta name="author" content="Applion Kft.">
+	<title>Connect Service</title>
+	<!-- Favicon -->
+	<spring:url value="/resources/core/favicon.ico" var="faviconIco" />
+    <link rel="icon" href="${faviconIco}">
+	<!-- Bootstrap core CSS -->
+	<spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
+	<link href="${bootstrapCss}" rel="stylesheet" />
+	<!-- Custom styles for this template -->
+	<spring:url value="/resources/core/css/narrow-jumbotron.css" var="jumbotronCss" />
+	<link href="${jumbotronCss}" rel="stylesheet" />
 </head>
-
-<nav class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="#">Project Name</a>
-		</div>
-	</div>
-</nav>
-
-<div class="jumbotron">
-	<div class="container">
-		<h1>${title}</h1>
-		<p>
-			<c:if test="${not empty msg}">
-				Hello ${msg}
-			</c:if>
-
-			<c:if test="${empty msg}">
-				Welcome Welcome!
-			</c:if>
-		<p>
-			<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-		</p>
-	</div>
-</div>
-
+<body>
 <div class="container">
+	<div class="header clearfix">
+		<nav></nav>
+		<h3 class="text-muted">Connect Service</h3>
+	</div>
+	<div class="jumbotron">
+		<h1 class="display-3">It works!</h1>
+	</div>
+	<div class="row marketing">
+		<div class="col-lg-6">
+			<h4>Package</h4>
+			<p>${packageName}</p>
 
-	<div class="row">
-		<div class="col-md-4">
-			<h2>Heading</h2>
-			<p>ABC</p>
-			<p>
-				<a class="btn btn-default" href="#" role="button">View details</a>
-			</p>
+			<h4>Version</h4>
+			<p>${appVersion}</p>
+
+			<h4>Revision</h4>
+			<p>${revision}</p>
+
+			<h4>Modules</h4>
+			<p>${moduleNames}</p>
 		</div>
-		<div class="col-md-4">
-			<h2>Heading</h2>
-			<p>ABC</p>
-			<p>
-				<a class="btn btn-default" href="#" role="button">View details</a>
-			</p>
-		</div>
-		<div class="col-md-4">
-			<h2>Heading</h2>
-			<p>ABC</p>
-			<p>
-				<a class="btn btn-default" href="#" role="button">View details</a>
-			</p>
+		<div class="col-lg-6">
+			<h4>Supported database</h4>
+			<p>${supportedDatabase}</p>
+
+			<h4>Commit time</h4>
+			<p>${commitTime}</p>
+
+			<h4>Build time</h4>
+			<p>${buildTime}</p>
+
+			<h4>Server</h4>
+			<p>${serverInfo} ${osName}</p>
 		</div>
 	</div>
-
-
-	<hr>
-	<footer>
-		<p>&copy; Mkyong.com ${commitYear} - v${appVersion} - ${moduleNames}</p>
+	<footer class="footer">
+		<p>&copy; Applion.hu ${commitYear}</p>
 	</footer>
-</div>
+</div> <!-- /container -->
 
-<spring:url value="/resources/core/css/hello.js" var="coreJs" />
-<spring:url value="/resources/core/css/bootstrap.min.js" var="bootstrapJs" />
-
-<script src="${coreJs}"></script>
-<script src="${bootstrapJs}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<spring:url value="/resources/core/js/ie10-viewport-bug-workaround.js" var="ie10workaroundJs" />
+<script src="${ie10workaroundJs}"></script>
 
 </body>
 </html>

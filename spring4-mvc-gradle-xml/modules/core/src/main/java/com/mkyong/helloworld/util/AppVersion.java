@@ -18,8 +18,16 @@ public class AppVersion {
         return BuildConfig.VERSION + "-" + BuildConfig.REVISION.substring(0, 6) + (BuildConfig.DIRTY ? "-dirty" : "");
     }
 
+    public String getRevision() {
+        return BuildConfig.REVISION;
+    }
+
     public OffsetDateTime getCommitTime() {
         return OffsetDateTime.ofInstant(BuildConfig.COMMIT_INSTANT, ZoneId.systemDefault());
+    }
+
+    public OffsetDateTime getBuildTime() {
+        return OffsetDateTime.ofInstant(BuildConfig.BUILD_INSTANT, ZoneId.systemDefault());
     }
 
 }
