@@ -30,7 +30,7 @@ public class WelcomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Map<String, Object> model) {
 		log.debug("index() is executed!");
-		DateTimeFormatter dateTimeFormatter = dateTimeFormatterFactory.createLocalizedMediumDateTimeFormatter();
+		final DateTimeFormatter dateTimeFormatter = dateTimeFormatterFactory.createLocalizedMediumDateTimeFormatter();
 		final Package pkg = moduleService.getPackage();
 		model.put("packageName", pkg.getName());
 		model.put("appVersion", AppVersion.getInstance().getShortVersion());

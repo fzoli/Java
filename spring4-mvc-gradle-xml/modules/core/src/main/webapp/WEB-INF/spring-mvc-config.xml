@@ -19,7 +19,16 @@
 	</bean>
  
 	<mvc:resources mapping="/resources/**" location="/resources/" />
-	 
+
+	<bean id="localeResolver"
+		  class="com.mkyong.helloworld.web.PreferredLocaleResolver" />
+
+	<!-- Register the welcome.properties -->
+	<bean id="messageSource"
+		  class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="i18n.welcome" />
+	</bean>
+
 	<mvc:annotation-driven />
  
 </beans>

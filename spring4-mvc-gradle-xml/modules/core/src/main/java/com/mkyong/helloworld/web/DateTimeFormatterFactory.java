@@ -10,7 +10,7 @@ import java.time.format.FormatStyle;
 public class DateTimeFormatterFactory {
 
 	@Autowired
-	private LocaleContext localeContext;
+	private PreferredLocaleContext localeContext;
 
 	public DateTimeFormatter createLocalizedMediumDateTimeFormatter() {
 		return DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM).withLocale(localeContext.getPreferredLocale());

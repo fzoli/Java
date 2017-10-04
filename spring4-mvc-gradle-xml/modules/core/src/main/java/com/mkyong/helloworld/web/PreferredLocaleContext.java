@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 import java.util.Locale;
 
 @Component
-public class LocaleContext {
+public class PreferredLocaleContext {
 
 	public Locale getPreferredLocale() {
 		Locale locale = LocaleContextHolder.getLocale();
@@ -32,7 +32,7 @@ public class LocaleContext {
 	}
 
 	public static String getPreferredLanguageCode(String languageCode) {
-		String[] knownLanguages = {"en"};
+		String[] knownLanguages = {"en", "hu"};
 		for (String l : knownLanguages) {
 			if (l.equalsIgnoreCase(languageCode)) {
 				return l;
