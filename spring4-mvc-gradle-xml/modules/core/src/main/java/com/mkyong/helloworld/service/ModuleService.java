@@ -1,5 +1,6 @@
 package com.mkyong.helloworld.service;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
 import com.mkyong.helloworld.repository.DatabaseModuleRepository;
 import com.mkyong.helloworld.repository.PackageModuleRepository;
@@ -87,7 +88,7 @@ public class ModuleService {
 
     /**
      * Creates the string representation of the project module.
-     * @return the string representation, like prod[core(MY_SQL), sample(MY_SQL)]
+     * @return the string representation, like prodMySql[core(MySql), sample(MySql)]
      */
     public String createProjectModuleStrings() {
         String name = getPackageModule().getModuleName();
@@ -100,8 +101,12 @@ public class ModuleService {
     private String createProjectModuleString(ProjectModule pm) {
         Optional<DatabaseModule> dbModule = getDatabaseModule(pm);
         return dbModule
-                .map(databaseModule -> pm.getModuleName() + "(" + databaseModule.getDatabaseType().name() + ")")
+                .map(databaseModule -> pm.getModuleName() + "(" + formatDatabaseType(databaseModule.getDatabaseType()) + ")")
                 .orElseGet(pm::getModuleName);
+    }
+
+    private String formatDatabaseType(DatabaseModule.DatabaseType databaseType) {
+        return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, databaseType.name());
     }
 
 }
