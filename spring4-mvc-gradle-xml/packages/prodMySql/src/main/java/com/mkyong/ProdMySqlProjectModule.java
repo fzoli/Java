@@ -11,4 +11,9 @@ public class ProdMySqlProjectModule implements ProjectModule {
         return "prodMySql";
     }
 
+    @Override
+    public boolean hasDatabase() {
+        return false;
+    }
+
 }

@@ -11,4 +11,9 @@ public class SampleProjectModule implements ProjectModule {
         return "sample";
     }
 
+    @Override
+    public boolean hasDatabase() {
+        return true;
+    }
+
 }

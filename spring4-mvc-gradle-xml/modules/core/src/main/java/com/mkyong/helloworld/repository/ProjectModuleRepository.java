@@ -1,26 +1,26 @@
 package com.mkyong.helloworld.repository;
 
 import com.google.common.collect.ImmutableList;
+import com.mkyong.helloworld.util.DatabaseModule;
 import com.mkyong.helloworld.util.ProjectModule;
 import com.mkyong.helloworld.util.ProjectModuleDescriptor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.SneakyThrows;
 import lombok.Synchronized;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Constructor;
 import java.util.Comparator;
+import java.util.Optional;
 
 @Repository
 public class ProjectModuleRepository {
 
-    private static final String SCAN_PACKAGE = "com";
+    private static final ModuleResolver<ProjectModuleDescriptor, ProjectModule> moduleResolver = new ModuleResolver<>(
+            ProjectModuleDescriptor.class, ProjectModule.class);
 
     private ImmutableList<ProjectModule> projectModules;
+
+    @Autowired
+    private DatabaseModuleRepository databaseModuleRepository;
 
     @Synchronized
     public ImmutableList<ProjectModule> getProjectModules() {
@@ -30,43 +30,36 @@ public class ProjectModuleRepository {
         return projectModules;
     }
 
-    private ImmutableList<ProjectModule> createProjectModules() {
-        ImmutableList.Builder<Wrapper> builder = ImmutableList.builder();
-        ClassPathScanningCandidateComponentProvider provider = createProjectModuleScanner();
-        for (BeanDefinition beanDef : provider.findCandidateComponents(SCAN_PACKAGE)) {
-            builder.add(createProjectModule(beanDef));
+    public Optional<DatabaseModule> getDatabaseModule(ProjectModule projectModule) {
+        Optional<DatabaseModule> dbModule = findDatabaseModule(projectModule);
+        if (projectModule.hasDatabase()) {
+            if (!dbModule.isPresent()) {
+                throw new IllegalStateException("Wrong configuration. Database module is NOT present.");
+            }
+            return dbModule;
         }
-        return builder.build().stream()
+        else {
+            if (dbModule.isPresent()) {
+                throw new IllegalStateException("Wrong configuration. Database module IS present.");
+            }
+            return Optional.empty();
+        }
+    }
+
+    private Optional<DatabaseModule> findDatabaseModule(ProjectModule projectModule) {
+        for (DatabaseModule dbModule : databaseModuleRepository.getDatabaseModules()) {
+            if (projectModule.getClass() == dbModule.getProjectModuleClass()) {
+                return Optional.of(dbModule);
+            }
+        }
+        return Optional.empty();
+    }
+
+    private ImmutableList<ProjectModule> createProjectModules() {
+        return moduleResolver.getModules().stream()
                 .sorted(Comparator.comparingInt(o -> o.getDescriptor().priority()))
-                .map(Wrapper::getModule)
+                .map(ModuleResolver.Wrapper::getModule)
                 .collect(ImmutableList.toImmutableList());
-    }
-
-    private ClassPathScanningCandidateComponentProvider createProjectModuleScanner() {
-        // Don't pull default filters (@Component, etc.):
-        ClassPathScanningCandidateComponentProvider provider
-                = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AnnotationTypeFilter(ProjectModuleDescriptor.class));
-        return provider;
-    }
-
-    @SneakyThrows
-    private Wrapper createProjectModule(BeanDefinition beanDef) {
-            Class<?> cl = Class.forName(beanDef.getBeanClassName());
-            ProjectModuleDescriptor descriptor = cl.getAnnotation(ProjectModuleDescriptor.class);
-            Constructor<?> constructor = cl.getConstructor();
-            ProjectModule module = (ProjectModule) constructor.newInstance();
-            return Wrapper.builder()
-                    .module(module)
-                    .descriptor(descriptor)
-                    .build();
-    }
-
-    @Builder
-    @Getter
-    private static final class Wrapper {
-        private final ProjectModule module;
-        private final ProjectModuleDescriptor descriptor;
     }
 
 }

@@ -11,4 +11,9 @@ public class ProdOracleProjectModule implements ProjectModule {
         return "prodOracle";
     }
 
+    @Override
+    public boolean hasDatabase() {
+        return false;
+    }
+
 }

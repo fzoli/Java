@@ -11,4 +11,9 @@ public class CoreProjectModule implements ProjectModule {
         return "core";
     }
 
+    @Override
+    public boolean hasDatabase() {
+        return true;
+    }
+
 }

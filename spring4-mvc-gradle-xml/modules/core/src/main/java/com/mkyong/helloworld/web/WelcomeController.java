@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mkyong.helloworld.repository.ProjectModuleRepository;
 import com.mkyong.helloworld.service.HelloWorldService;
 import com.mkyong.helloworld.util.AppVersion;
+import com.mkyong.helloworld.util.DatabaseModule;
 import com.mkyong.helloworld.util.ProjectModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class WelcomeController {
@@ -61,8 +63,15 @@ public class WelcomeController {
 
 	private String createModuleNames() {
 		return String.join(", ", projectModuleRepository.getProjectModules().stream()
-				.map(ProjectModule::getModuleName)
+				.map(this::createModuleName)
 				.collect(ImmutableList.toImmutableList()));
+	}
+
+	private String createModuleName(ProjectModule pm) {
+		Optional<DatabaseModule> dbModule = projectModuleRepository.getDatabaseModule(pm);
+		return dbModule
+				.map(databaseModule -> pm.getModuleName() + "(" + databaseModule.getDatabaseType().name() + ")")
+				.orElseGet(pm::getModuleName);
 	}
 
 }
