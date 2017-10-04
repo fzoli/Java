@@ -1,10 +1,11 @@
 package com.mkyong;
 
-import com.mkyong.helloworld.util.ProjectModule;
-import com.mkyong.helloworld.util.ProjectModuleDescriptor;
+import com.mkyong.helloworld.util.DatabaseModule;
+import com.mkyong.helloworld.util.PackageModule;
+import com.mkyong.helloworld.util.PackageModuleDescriptor;
 
-@ProjectModuleDescriptor
-public class ProdMySqlProjectModule implements ProjectModule {
+@PackageModuleDescriptor
+public class ProdMySqlProjectModule implements PackageModule {
 
     @Override
     public String getModuleName() {
@@ -12,8 +13,8 @@ public class ProdMySqlProjectModule implements ProjectModule {
     }
 
     @Override
-    public boolean hasDatabase() {
-        return false;
+    public DatabaseModule.DatabaseType getExpectedDatabaseType() {
+        return DatabaseModule.DatabaseType.MY_SQL;
     }
 
 }
