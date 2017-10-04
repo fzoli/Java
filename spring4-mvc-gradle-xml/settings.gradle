@@ -1,1 +1,3 @@
-include ':modules:core', ':modules:coreMySql', ':modules:coreOracle', ':modules:sample', ':modules:sampleMySql', ':modules:prodMySql'
+include ':modules:core', ':modules:coreMySql', ':modules:coreOracle'
+include ':modules:sample', ':modules:sampleMySql', ':modules:sampleOracle'
+include ':packages:prodMySql', ':packages:prodOracle'

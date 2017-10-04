@@ -1,0 +1,14 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+gretty {
+  overlay ':modules:core'
+  overlay ':modules:sample'
+  overlay ':modules:coreOracle'
+  overlay ':modules:sampleOracle'
+}
+
+war {
+  archiveName 'prod.war'
+}
