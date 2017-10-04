@@ -1,6 +1,6 @@
 package com.mkyong;
 
-import com.mkyong.helloworld.util.DatabaseModule;
+import com.mkyong.helloworld.util.DatabaseType;
 import com.mkyong.helloworld.util.PackageModule;
 import com.mkyong.helloworld.util.PackageModuleDescriptor;
 
@@ -13,8 +13,8 @@ public class ProdOraclePackageModule implements PackageModule {
     }
 
     @Override
-    public DatabaseModule.DatabaseType getExpectedDatabaseType() {
-        return DatabaseModule.DatabaseType.ORACLE;
+    public DatabaseType getExpectedDatabaseType() {
+        return DatabaseType.ORACLE;
     }
 
 }

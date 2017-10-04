@@ -2,6 +2,7 @@ package com.mkyong;
 
 import com.mkyong.helloworld.util.DatabaseModule;
 import com.mkyong.helloworld.util.DatabaseModuleDescriptor;
+import com.mkyong.helloworld.util.DatabaseType;
 import com.mkyong.helloworld.util.ProjectModule;
 
 @DatabaseModuleDescriptor
