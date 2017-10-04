@@ -3,12 +3,12 @@ apply plugin: 'war'
 apply plugin: 'org.akhikhl.gretty'
 
 gretty {
-  overlay ':core'
-  overlay ':sample'
-  overlay ':coreMySql'
-  overlay ':sampleMySql'
+  overlay ':modules:core'
+  overlay ':modules:sample'
+  overlay ':modules:coreMySql'
+  overlay ':modules:sampleMySql'
 }
 
 war {
-  archiveName 'prod-mysql.war'
+  archiveName 'prod.war'
 }

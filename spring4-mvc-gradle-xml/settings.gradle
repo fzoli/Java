@@ -1,8 +1,1 @@
-include ':core', ':coreMySql', ':coreOracle', ':sample', ':sampleMySql', ':prodMySql'
-
-project(':core').projectDir = new File(rootDir, 'modules/core')
-project(':coreMySql').projectDir = new File(rootDir, 'modules/coreMySql')
-project(':coreOracle').projectDir = new File(rootDir, 'modules/coreOracle')
-project(':sample').projectDir = new File(rootDir, 'modules/sample')
-project(':sampleMySql').projectDir = new File(rootDir, 'modules/sampleMySql')
-project(':prodMySql').projectDir = new File(rootDir, 'modules/prodMySql')
+include ':modules:core', ':modules:coreMySql', ':modules:coreOracle', ':modules:sample', ':modules:sampleMySql', ':modules:prodMySql'
