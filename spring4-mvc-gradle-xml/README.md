@@ -106,3 +106,9 @@ The WAR files are in the `webapps` directory.
 - [Gretty](http://akhikhl.github.io/gretty-doc/): The gradle plugin that we use for build WARs.
 - [grgit](https://github.com/ajoberstar/grgit): The Groovy way to use Git.
 - [gradle-buildconfig-plugin](https://github.com/mfuerstenau/gradle-buildconfig-plugin): A gradle plugin that generates build configuration Java class.
+
+# Welcome page
+ 
+![Welcome page - en](doc/snapshot-en.png "Welcome page - en")
+
+![Welcome page - hu](doc/snapshot-hu.png "Welcome page - hu")
