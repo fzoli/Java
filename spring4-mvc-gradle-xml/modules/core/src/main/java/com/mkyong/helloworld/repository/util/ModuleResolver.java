@@ -38,7 +38,7 @@ public class ModuleResolver<DescriptorT extends Annotation, ModuleT> {
         ImmutableList.Builder<Wrapper<DescriptorT, ModuleT>> builder = ImmutableList.builder();
         ClassPathScanningCandidateComponentProvider provider = createModuleScanner();
         for (BeanDefinition beanDef : provider.findCandidateComponents(SCAN_PACKAGE)) {
-            builder.add(createProjectModule(beanDef));
+            builder.add(createModule(beanDef));
         }
         return builder.build();
     }
@@ -52,7 +52,7 @@ public class ModuleResolver<DescriptorT extends Annotation, ModuleT> {
     }
 
     @SneakyThrows
-    private Wrapper<DescriptorT, ModuleT> createProjectModule(BeanDefinition beanDef) {
+    private Wrapper<DescriptorT, ModuleT> createModule(BeanDefinition beanDef) {
             Class<?> cl = Class.forName(beanDef.getBeanClassName());
             DescriptorT descriptor = cl.getAnnotation(descriptorClass);
             Constructor<?> constructor = cl.getConstructor();
