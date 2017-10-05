@@ -1,5 +1,6 @@
-package com.mkyong.helloworld.web;
+package com.mkyong.helloworld.web.locale;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,10 @@ public class PreferredLocaleResolver extends AcceptHeaderLocaleResolver {
     @Override
     public Locale resolveLocale(HttpServletRequest request) {
         Locale l = super.resolveLocale(request);
-        return new Locale(PreferredLocaleContext.getPreferredLocale(l).getLanguage());
+        if (StringUtils.isEmpty(l.getLanguage())) {
+            return Locale.getDefault();
+        }
+        return new Locale(l.getLanguage());
     }
 
 }

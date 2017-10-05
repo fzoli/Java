@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mkyong.helloworld.service.ModuleService;
 import com.mkyong.helloworld.service.Package;
 import com.mkyong.helloworld.util.AppVersion;
+import com.mkyong.helloworld.web.locale.DateTimeFormatterFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

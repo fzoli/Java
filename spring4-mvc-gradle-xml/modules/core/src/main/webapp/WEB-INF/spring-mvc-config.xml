@@ -21,7 +21,7 @@
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 
 	<bean id="localeResolver"
-		  class="com.mkyong.helloworld.web.PreferredLocaleResolver" />
+		  class="com.mkyong.helloworld.web.locale.PreferredLocaleResolver" />
 
 	<!-- Register the welcome.properties -->
 	<bean id="messageSource"
