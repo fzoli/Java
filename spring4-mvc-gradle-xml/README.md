@@ -1,5 +1,42 @@
 # Development
 
+## Infrastructure mode (preferred)
+
+In this mode you have a configured server, no need to use gradle to run the server.
+
+### Attach Intellij IDEA debugger
+
+#### Create the Run configuration
+
+Execute the following steps at the first time.
+
+1. `Edit configurations...`
+0. `+` button
+0. `Tomcat server` -> `Local`
+0. `Deployment` tab -> `+` button -> `External source`
+0. Choose `modules/sample/build/output/sample/webapps/sample.war`
+0. Application context: `/service` (or what you want)
+0. `Before launch` -> `Run gradle task`: select module: `:sample`, type task: `:buildProduct`
+0. `Server` tab -> Choose your configured application server
+0. (Optional) `Open browser`: `http(s)://localhost:$PORT/service`
+0. Name: `Tomcat - :sample`
+
+The result:
+ 
+![Sample configuration](doc/tomcat-gradle.png "Sample configuration")
+
+
+#### Use the Run configuration
+
+You can attach the debugger any time, just execute the following steps.
+
+1. Select `Tomcat - :sample` from the list.
+0. Press the debug button.
+
+### Server log
+
+You can see the server log inside IDEA.
+
 ## Ad-hoc mode
 
 In ad-hoc mode you have no configured server, gradle creates it.
@@ -44,43 +81,6 @@ Log files can be found in the `~/logs` directory.\
 Example for `sample` module: `~/logs/sample.log`
 
 NOTE: Character `~` means the user home.
-
-## Infrastructure mode (preferred)
-
-In this mode you have a configured server, no need to use gradle to run the server.
-
-### Attach Intellij IDEA debugger
-
-#### Create the Run configuration
-
-Execute the following steps at the first time.
-
-1. `Edit configurations...`
-0. `+` button
-0. `Tomcat server` -> `Local`
-0. `Deployment` tab -> `+` button -> `External source`
-0. Choose `modules/sample/build/output/sample/webapps/sample.war`
-0. Application context: `/service` (or what you want)
-0. `Before launch` -> `Run gradle task`: select module: `:sample`, type task: `:buildProduct`
-0. `Server` tab -> Choose your configured application server
-0. (Optional) `Open browser`: `http(s)://localhost:$PORT/service`
-0. Name: `Tomcat - :sample`
-
-The result:
- 
-![Sample configuration](doc/tomcat-gradle.png "Sample configuration")
-
-
-#### Use the Run configuration
-
-You can attach the debugger any time, just execute the following steps.
-
-1. Select `Tomcat - :sample` from the list.
-0. Press the debug button.
-
-### Server log
-
-You can see the server log inside IDEA.
 
 # Release
 
