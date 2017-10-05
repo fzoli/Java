@@ -26,34 +26,34 @@
 		<h3 class="text-muted"><spring:message code="welcome.app.name" /></h3>
 	</div>
 	<div class="jumbotron">
-		<h1 class="display-3"><spring:message code="welcome.header.it_works" /></h1>
+		<h1 class="display-4 text-truncate"><spring:message code="welcome.header.it_works" /></h1>
 	</div>
 	<div class="row marketing">
 		<div class="col-lg-6">
 			<h4><spring:message code="welcome.title.package" /></h4>
-			<p>${packageName}</p>
+			<p class="text-truncate">${packageName}</p>
 
 			<h4><spring:message code="welcome.title.version" /></h4>
-			<p>${appVersion}</p>
+			<p class="text-truncate">${appVersion}</p>
 
 			<h4><spring:message code="welcome.title.revision" /></h4>
-			<p>${revision}</p>
+			<p class="text-truncate">${revision}</p>
 
 			<h4><spring:message code="welcome.title.modules" /></h4>
-			<p>${moduleNames}</p>
+			<p class="text-truncate">${moduleNames}</p>
 		</div>
 		<div class="col-lg-6">
 			<h4><spring:message code="welcome.title.supported_database" /></h4>
-			<p>${supportedDatabase}</p>
+			<p class="text-truncate">${supportedDatabase}</p>
 
 			<h4><spring:message code="welcome.title.commit_time" /></h4>
-			<p>${commitTime}</p>
+			<p class="text-truncate">${commitTime}</p>
 
 			<h4><spring:message code="welcome.title.build_time" /></h4>
-			<p>${buildTime}</p>
+			<p class="text-truncate">${buildTime}</p>
 
 			<h4><spring:message code="welcome.title.server" /></h4>
-			<p>${serverInfo} ${osName}</p>
+			<p class="text-truncate">${serverInfo} ${osName}</p>
 		</div>
 	</div>
 	<footer class="footer">
