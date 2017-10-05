@@ -6,9 +6,9 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="Connect Service">
-	<meta name="author" content="Applion Kft.">
-	<title><spring:message code="welcome.app_name" /></title>
+	<meta name="description" content="<spring:message code="welcome.app.description" />">
+	<meta name="author" content="<spring:message code="welcome.app.author" />">
+	<title><spring:message code="welcome.app.name" /></title>
 	<!-- Favicon -->
 	<spring:url value="/resources/core/favicon.ico" var="faviconIco" />
     <link rel="icon" href="${faviconIco}">
@@ -23,7 +23,7 @@
 <div class="container">
 	<div class="header clearfix">
 		<nav></nav>
-		<h3 class="text-muted"><spring:message code="welcome.app_name" /></h3>
+		<h3 class="text-muted"><spring:message code="welcome.app.name" /></h3>
 	</div>
 	<div class="jumbotron">
 		<h1 class="display-3"><spring:message code="welcome.header.it_works" /></h1>
