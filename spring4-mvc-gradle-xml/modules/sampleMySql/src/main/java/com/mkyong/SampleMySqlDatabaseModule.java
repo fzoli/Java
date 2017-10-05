@@ -1,9 +1,9 @@
 package com.mkyong;
 
-import com.mkyong.helloworld.repository.module.databasemodule.DatabaseModule;
-import com.mkyong.helloworld.repository.module.databasemodule.DatabaseModuleDescriptor;
-import com.mkyong.helloworld.common.module.DatabaseType;
-import com.mkyong.helloworld.repository.module.projectmodule.ProjectModule;
+import com.mkyong.logic.repository.module.databasemodule.DatabaseModule;
+import com.mkyong.logic.repository.module.databasemodule.DatabaseModuleDescriptor;
+import com.mkyong.logic.common.module.DatabaseType;
+import com.mkyong.logic.repository.module.projectmodule.ProjectModule;
 
 @DatabaseModuleDescriptor
 public class SampleMySqlDatabaseModule implements DatabaseModule {
