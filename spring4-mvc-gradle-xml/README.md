@@ -24,7 +24,7 @@ The selected package: `prodMySql`
 
 The result:
  
-![Sample configuration](doc/tomcat-gradle.png "Sample configuration")
+![IDEA configuration](doc/tomcat-gradle.png "IDEA configuration")
 
 
 #### Use the Run configuration
@@ -42,21 +42,13 @@ You can see the server log inside IDEA.
 
 In ad-hoc mode you have no configured server, gradle creates it.
 
-**NOTE:** Documentation of this block is not up-to-date.
-
 ### Start Tomcat server in debug mode
 
-Execute this command to build and run `sample` module: \
-`./gradlew :sample:tomcatStartDebug --info`
+Execute this command to build and run `prodMySql` package module: \
+`./gradlew :packages:prodMySql:tomcatRunDebug`
 
-Switch `--info` prints some info log.
 If everything is OK, you see this output at the end:\
 `Listening for transport dt_socket at address: 5005`
-
-### URL
-
-Here is the index URL for `sample` module:\
-`http://localhost:8080/sample`
 
 ### Attach Intellij IDEA debugger
 
@@ -78,10 +70,17 @@ You can attach the debugger any time, just execute the following steps.
 0. Select `Debug server` from the list.
 0. Press the debug button.
 
+### URL
+
+Here is the index URL for `prodMySql` package module:\
+`http://localhost:8080/prod`
+
+**NOTE**: The server starts when you attach the debugger!
+
 ### Server log
 
 Log files can be found in the `~/logs` directory.\
-Example for `sample` module: `~/logs/sample.log`
+Example for `prodMySql` package module: `~/logs/prodMySql.log`
 
 NOTE: Character `~` means the user home.
 
