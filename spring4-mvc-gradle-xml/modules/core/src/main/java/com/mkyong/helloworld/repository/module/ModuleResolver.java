@@ -1,4 +1,4 @@
-package com.mkyong.helloworld.repository.util;
+package com.mkyong.helloworld.repository.module;
 
 import com.google.common.collect.ImmutableList;
 import lombok.Builder;

@@ -1,13 +1,13 @@
-package com.mkyong.helloworld.service.project;
+package com.mkyong.helloworld.service.module;
 
 import com.google.common.collect.ImmutableList;
-import com.mkyong.helloworld.repository.databasemodule.DatabaseModuleRepository;
-import com.mkyong.helloworld.repository.packagemodule.PackageModuleRepository;
-import com.mkyong.helloworld.repository.projectmodule.ProjectModuleRepository;
-import com.mkyong.helloworld.repository.databasemodule.DatabaseModule;
-import com.mkyong.helloworld.common.DatabaseType;
-import com.mkyong.helloworld.repository.packagemodule.PackageModule;
-import com.mkyong.helloworld.repository.projectmodule.ProjectModule;
+import com.mkyong.helloworld.repository.module.databasemodule.DatabaseModuleRepository;
+import com.mkyong.helloworld.repository.module.packagemodule.PackageModuleRepository;
+import com.mkyong.helloworld.repository.module.projectmodule.ProjectModuleRepository;
+import com.mkyong.helloworld.repository.module.databasemodule.DatabaseModule;
+import com.mkyong.helloworld.common.module.DatabaseType;
+import com.mkyong.helloworld.repository.module.packagemodule.PackageModule;
+import com.mkyong.helloworld.repository.module.projectmodule.ProjectModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

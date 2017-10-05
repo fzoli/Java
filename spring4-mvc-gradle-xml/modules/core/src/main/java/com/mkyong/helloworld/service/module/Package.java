@@ -1,8 +1,8 @@
-package com.mkyong.helloworld.service.project;
+package com.mkyong.helloworld.service.module;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
-import com.mkyong.helloworld.common.DatabaseType;
+import com.mkyong.helloworld.common.module.DatabaseType;
 import lombok.Builder;
 import lombok.Getter;
 

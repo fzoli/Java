@@ -1,9 +1,9 @@
 package com.mkyong;
 
-import com.mkyong.helloworld.repository.databasemodule.DatabaseModule;
-import com.mkyong.helloworld.repository.databasemodule.DatabaseModuleDescriptor;
-import com.mkyong.helloworld.common.DatabaseType;
-import com.mkyong.helloworld.repository.projectmodule.ProjectModule;
+import com.mkyong.helloworld.repository.module.databasemodule.DatabaseModule;
+import com.mkyong.helloworld.repository.module.databasemodule.DatabaseModuleDescriptor;
+import com.mkyong.helloworld.common.module.DatabaseType;
+import com.mkyong.helloworld.repository.module.projectmodule.ProjectModule;
 
 @DatabaseModuleDescriptor
 public class SampleOracleDatabaseModule implements DatabaseModule {

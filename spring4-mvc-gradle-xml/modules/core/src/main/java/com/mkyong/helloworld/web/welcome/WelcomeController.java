@@ -1,9 +1,9 @@
 package com.mkyong.helloworld.web.welcome;
 
 import com.google.common.collect.ImmutableList;
-import com.mkyong.helloworld.service.project.AppVersion;
-import com.mkyong.helloworld.service.project.Package;
-import com.mkyong.helloworld.service.project.PackageService;
+import com.mkyong.helloworld.service.module.AppVersion;
+import com.mkyong.helloworld.service.module.Package;
+import com.mkyong.helloworld.service.module.PackageService;
 import com.mkyong.helloworld.web.util.locale.DateTimeFormatterFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

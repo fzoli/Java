@@ -1,4 +1,4 @@
-package com.mkyong.helloworld.repository.projectmodule;
+package com.mkyong.helloworld.repository.module.packagemodule;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,6 +7,5 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ProjectModuleDescriptor {
-    int priority() default 0;
+public @interface PackageModuleDescriptor {
 }

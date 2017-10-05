@@ -1,7 +1,7 @@
 package com.mkyong;
 
-import com.mkyong.helloworld.repository.projectmodule.ProjectModule;
-import com.mkyong.helloworld.repository.projectmodule.ProjectModuleDescriptor;
+import com.mkyong.helloworld.repository.module.projectmodule.ProjectModule;
+import com.mkyong.helloworld.repository.module.projectmodule.ProjectModuleDescriptor;
 
 @ProjectModuleDescriptor
 public class SampleProjectModule implements ProjectModule {

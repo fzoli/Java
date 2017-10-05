@@ -1,4 +1,4 @@
-package com.mkyong.helloworld.repository.projectmodule;
+package com.mkyong.helloworld.repository.module.projectmodule;
 
 public interface ProjectModule {
     String getModuleName();
