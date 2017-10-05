@@ -50,6 +50,10 @@ Execute this command to build and run `prodMySql` package module: \
 If everything is OK, you see this output at the end:\
 `Listening for transport dt_socket at address: 5005`
 
+**NOTE**:\
+You can run any gradle command inside IDEA.\
+The only disadvantage that there is no console output, but quick and nice :)
+
 ### Attach Intellij IDEA debugger
 
 #### Create the Run configuration
@@ -75,14 +79,20 @@ You can attach the debugger any time, just execute the following steps.
 Here is the index URL for `prodMySql` package module:\
 `http://localhost:8080/prod`
 
-**NOTE**: The server starts when you attach the debugger!
+**NOTE**:\
+The server starts only when you attach the debugger!
 
 ### Server log
 
 Log files can be found in the `~/logs` directory.\
 Example for `prodMySql` package module: `~/logs/prodMySql.log`
 
-NOTE: Character `~` means the user home.
+**NOTE**:\
+Character `~` means the user home.
+
+**NOTE**:\
+If gradle runs inside IDEA the log is not visible.\
+Linux solution in IDEA terminal: `tail -F ~/logs/prodMySql.log`
 
 ## Suppress unused classes
 
