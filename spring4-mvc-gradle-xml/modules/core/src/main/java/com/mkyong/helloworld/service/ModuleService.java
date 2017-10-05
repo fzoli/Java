@@ -55,17 +55,17 @@ public class ModuleService {
      * Find, validate and return the database module of the requested project module.
      * @param projectModule the requested project module
      * @return empty optional if the project module has no database; otherwise the database module
-     * @throws IllegalStateException if the configuration is wrong
+     * @throws WrongBuildConfigurationException if the configuration is wrong
      */
     private Optional<DatabaseModule> getDatabaseModule(PackageModule packageModule, ProjectModule projectModule) {
         Optional<DatabaseModule> dbModule = findDatabaseModule(projectModule);
         if (projectModule.hasDatabase()) {
             if (!dbModule.isPresent()) {
-                throw new IllegalStateException("Wrong configuration. Database module is NOT present.");
+                throw new WrongBuildConfigurationException("Database module is NOT present.");
             }
             if (dbModule.get().getDatabaseType() != packageModule.getExpectedDatabaseType()) {
-                throw new IllegalStateException(
-                        "Wrong configuration. Database module differs."
+                throw new WrongBuildConfigurationException(
+                        "Database module differs."
                                 + "Got: " + dbModule.get().getDatabaseType()
                                 + "Expected: " + packageModule.getExpectedDatabaseType());
             }
@@ -73,7 +73,7 @@ public class ModuleService {
         }
         else {
             if (dbModule.isPresent()) {
-                throw new IllegalStateException("Wrong configuration. Database module IS present.");
+                throw new WrongBuildConfigurationException("Database module IS present.");
             }
             return Optional.empty();
         }
@@ -89,7 +89,7 @@ public class ModuleService {
             }
         }
         if (types.size() > 1) {
-            throw new IllegalStateException("Wrong configuration. Multiple DatabaseType has found: " + types);
+            throw new WrongBuildConfigurationException("Multiple DatabaseType has found: " + types);
         }
         if (dbModules.isEmpty()) {
             return Optional.empty();
@@ -97,18 +97,18 @@ public class ModuleService {
         if (dbModules.size() == 1) {
             return Optional.of(dbModules.get(0));
         }
-        throw new IllegalStateException("Wrong configuration. Multiple DatabaseModule has found");
+        throw new WrongBuildConfigurationException("Multiple DatabaseModule has found");
     }
 
     private PackageModule getPackageModule() {
         List<PackageModule> l = packageModuleRepository.getPackageModules();
         if (l.isEmpty()) {
-            throw new IllegalStateException("Wrong configuration. No PackageModule has found");
+            throw new WrongBuildConfigurationException("No PackageModule has found");
         }
         if (l.size() == 1) {
             return l.get(0);
         }
-        throw new IllegalStateException("Wrong configuration. Multiple PackageModule has found");
+        throw new WrongBuildConfigurationException("Multiple PackageModule has found");
     }
 
 }
