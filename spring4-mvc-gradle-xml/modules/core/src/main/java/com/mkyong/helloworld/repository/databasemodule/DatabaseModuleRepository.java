@@ -1,9 +1,7 @@
-package com.mkyong.helloworld.repository;
+package com.mkyong.helloworld.repository.databasemodule;
 
 import com.google.common.collect.ImmutableList;
-import com.mkyong.helloworld.util.DatabaseModule;
-import com.mkyong.helloworld.util.DatabaseModuleDescriptor;
-import com.mkyong.helloworld.util.ModuleResolver;
+import com.mkyong.helloworld.repository.util.ModuleResolver;
 import lombok.Synchronized;
 import org.springframework.stereotype.Repository;
 

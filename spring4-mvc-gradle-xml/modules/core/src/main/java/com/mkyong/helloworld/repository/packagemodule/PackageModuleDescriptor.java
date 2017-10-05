@@ -1,4 +1,4 @@
-package com.mkyong.helloworld.util;
+package com.mkyong.helloworld.repository.packagemodule;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DatabaseModuleDescriptor {
+public @interface PackageModuleDescriptor {
 }

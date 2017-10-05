@@ -1,10 +1,10 @@
-package com.mkyong.helloworld.web;
+package com.mkyong.helloworld.web.welcome;
 
 import com.google.common.collect.ImmutableList;
-import com.mkyong.helloworld.service.ModuleService;
-import com.mkyong.helloworld.service.Package;
-import com.mkyong.helloworld.util.AppVersion;
-import com.mkyong.helloworld.web.locale.DateTimeFormatterFactory;
+import com.mkyong.helloworld.service.project.AppVersion;
+import com.mkyong.helloworld.service.project.Package;
+import com.mkyong.helloworld.service.project.PackageService;
+import com.mkyong.helloworld.web.util.locale.DateTimeFormatterFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,13 +26,13 @@ public class WelcomeController {
 	private DateTimeFormatterFactory dateTimeFormatterFactory;
 
 	@Autowired
-	private ModuleService moduleService;
+	private PackageService packageService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Map<String, Object> model) {
 		log.debug("index() is executed!");
 		final DateTimeFormatter dateTimeFormatter = dateTimeFormatterFactory.createLocalizedMediumDateTimeFormatter();
-		final Package pkg = moduleService.getPackage();
+		final Package pkg = packageService.getPackage();
 		model.put("packageName", pkg.getName());
 		model.put("appVersion", AppVersion.getInstance().getShortVersion());
 		model.put("revision", AppVersion.getInstance().getRevision());

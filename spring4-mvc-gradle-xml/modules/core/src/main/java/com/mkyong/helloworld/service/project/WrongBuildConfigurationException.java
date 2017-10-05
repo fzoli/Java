@@ -1,4 +1,4 @@
-package com.mkyong.helloworld.service;
+package com.mkyong.helloworld.service.project;
 
 public class WrongBuildConfigurationException extends IllegalStateException {
 

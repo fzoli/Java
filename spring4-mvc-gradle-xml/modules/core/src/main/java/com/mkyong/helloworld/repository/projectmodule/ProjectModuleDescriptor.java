@@ -1,4 +1,4 @@
-package com.mkyong.helloworld.util;
+package com.mkyong.helloworld.repository.projectmodule;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

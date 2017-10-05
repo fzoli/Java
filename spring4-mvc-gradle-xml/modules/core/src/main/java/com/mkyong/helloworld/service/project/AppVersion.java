@@ -1,4 +1,4 @@
-package com.mkyong.helloworld.util;
+package com.mkyong.helloworld.service.project;
 
 import com.mkyong.BuildConfig;
 import lombok.Getter;

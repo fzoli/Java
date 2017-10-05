@@ -1,4 +1,4 @@
-package com.mkyong.helloworld.util;
+package com.mkyong.helloworld.common;
 
 public enum DatabaseType {
     ORACLE,

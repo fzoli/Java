@@ -1,9 +1,7 @@
-package com.mkyong.helloworld.repository;
+package com.mkyong.helloworld.repository.projectmodule;
 
 import com.google.common.collect.ImmutableList;
-import com.mkyong.helloworld.util.ModuleResolver;
-import com.mkyong.helloworld.util.ProjectModule;
-import com.mkyong.helloworld.util.ProjectModuleDescriptor;
+import com.mkyong.helloworld.repository.util.ModuleResolver;
 import lombok.Synchronized;
 import org.springframework.stereotype.Repository;
 

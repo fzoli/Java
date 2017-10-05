@@ -1,4 +1,4 @@
-package com.mkyong.helloworld.web.locale;
+package com.mkyong.helloworld.web.util.locale;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;

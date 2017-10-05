@@ -1,8 +1,8 @@
 package com.mkyong;
 
-import com.mkyong.helloworld.util.DatabaseType;
-import com.mkyong.helloworld.util.PackageModule;
-import com.mkyong.helloworld.util.PackageModuleDescriptor;
+import com.mkyong.helloworld.common.DatabaseType;
+import com.mkyong.helloworld.repository.packagemodule.PackageModule;
+import com.mkyong.helloworld.repository.packagemodule.PackageModuleDescriptor;
 
 @PackageModuleDescriptor
 public class ProdOraclePackageModule implements PackageModule {

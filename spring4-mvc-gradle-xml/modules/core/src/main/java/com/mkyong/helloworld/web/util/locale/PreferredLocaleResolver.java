@@ -1,4 +1,4 @@
-package com.mkyong.helloworld.web.locale;
+package com.mkyong.helloworld.web.util.locale;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
