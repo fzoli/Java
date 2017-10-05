@@ -85,6 +85,10 @@ Example for `sample` module: `~/logs/sample.log`
 
 NOTE: Character `~` means the user home.
 
+## Suppress unused classes
+
+![Unused class solution](doc/idea_unused_class_solution.png "Unused class solution")
+
 # Release
 
 Before build:\
