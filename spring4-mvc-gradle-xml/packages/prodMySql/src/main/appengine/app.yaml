@@ -1,0 +1,10 @@
+# Do not set project ID (app ID) here.
+# Invoke: gcloud config set project $PROJECT_ID
+# Before: ./gradlew :packages:prodMySql:appengineDeploy
+
+runtime: java
+env: flex
+
+handlers:
+- url: /.*
+  script: this field is required, but ignored
