@@ -25,6 +25,9 @@ gretty {
 }
 
 appengine {
+  stage {
+    artifact = file('build/libs/prod.war')
+  }
   deploy {   // deploy configuration
     stopPreviousVersion = true  // default - stop the current version
     promote = true              // default - & make this the current version

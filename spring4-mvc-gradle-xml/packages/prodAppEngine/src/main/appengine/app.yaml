@@ -8,8 +8,6 @@
 # Then deploy:
 # ~/google-cloud-sdk/bin/gcloud app deploy packages/prodAppEngine/build/staged-app/app.yaml --project '$APP_ID'
 
-# NOTE: Before deploy check the generated WAR. If the name is partial.war, wrong WAR is copied. Fix it.
-
 runtime: java
 env: flex
 
