@@ -58,9 +58,14 @@ public class ModuleResolver<DescriptorT extends Annotation, ModuleT> {
             Constructor<?> constructor = cl.getConstructor();
             Object moduleObject = constructor.newInstance();
             return Wrapper.<DescriptorT, ModuleT>builder()
-                .module((ModuleT) moduleObject)
+                .module(toModule(moduleObject))
                 .descriptor(descriptor)
                 .build();
+    }
+
+    @SuppressWarnings("unchecked")
+    private ModuleT toModule(Object moduleObject) {
+        return (ModuleT) moduleObject;
     }
 
     @Builder

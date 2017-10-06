@@ -8,6 +8,7 @@ import com.mkyong.logic.repository.module.databasemodule.DatabaseModule;
 import com.mkyong.logic.common.module.DatabaseType;
 import com.mkyong.logic.repository.module.packagemodule.PackageModule;
 import com.mkyong.logic.repository.module.projectmodule.ProjectModule;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +17,17 @@ import java.util.*;
 @Service
 public class PackageService {
 
-    @Autowired
-    private PackageModuleRepository packageModuleRepository;
+    private final PackageModuleRepository packageModuleRepository;
+    private final ProjectModuleRepository projectModuleRepository;
+    private final DatabaseModuleRepository databaseModuleRepository;
 
     @Autowired
-    private ProjectModuleRepository projectModuleRepository;
-
-    @Autowired
-    private DatabaseModuleRepository databaseModuleRepository;
+    @Builder
+    public PackageService(PackageModuleRepository packageModuleRepository, ProjectModuleRepository projectModuleRepository, DatabaseModuleRepository databaseModuleRepository) {
+        this.packageModuleRepository = packageModuleRepository;
+        this.projectModuleRepository = projectModuleRepository;
+        this.databaseModuleRepository = databaseModuleRepository;
+    }
 
     public Package getPackage() {
         PackageModule packageModule = getPackageModule();
