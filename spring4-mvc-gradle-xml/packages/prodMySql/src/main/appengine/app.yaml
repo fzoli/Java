@@ -1,6 +1,14 @@
 # Do not set project ID (app ID) here.
+
 # Invoke: gcloud config set project $PROJECT_ID
 # Before: ./gradlew :packages:prodMySql:appengineDeploy
+
+# Or forget appengineDeploy and invoke:
+# ./gradlew clean :packages:prodMySql:appengineStage
+# Then deploy:
+# ~/google-cloud-sdk/bin/gcloud app deploy packages/prodMySql/build/staged-app/app.yaml --project '$APP_ID'
+
+# NOTE: Before deploy check the generated WAR. If the name is partial.war, wrong WAR is copied. Fix it.
 
 runtime: java
 env: flex
