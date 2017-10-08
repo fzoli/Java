@@ -32,7 +32,11 @@ public class PackageService {
     public Package getPackage() {
         PackageModule packageModule = getPackageModule();
         ImmutableList.Builder<Package.ProjectModule> b = ImmutableList.builder();
-        for (ProjectModule pm : projectModuleRepository.getProjectModules()) {
+        ImmutableList<ProjectModule> pms = projectModuleRepository.getProjectModules();
+        if (pms.isEmpty()) {
+            throw new WrongBuildConfigurationException("No project module has found.");
+        }
+        for (ProjectModule pm : pms) {
             Optional<DatabaseModule> a = getDatabaseModule(packageModule, pm);
             Package.DatabaseModule dbm;
             if (a.isPresent()) {
@@ -65,7 +69,7 @@ public class PackageService {
         Optional<DatabaseModule> dbModule = findDatabaseModule(projectModule);
         if (projectModule.hasDatabase()) {
             if (!dbModule.isPresent()) {
-                throw new WrongBuildConfigurationException("Database module is NOT present.");
+                throw new WrongBuildConfigurationException("Database module does NOT present.");
             }
             if (dbModule.get().getDatabaseType() != packageModule.getExpectedDatabaseType()) {
                 throw new WrongBuildConfigurationException(
