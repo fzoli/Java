@@ -12,6 +12,7 @@ buildscript {
         classpath "gradle.plugin.org.akhikhl.gretty:gretty:2.0.0"
         classpath "org.ajoberstar:grgit:2.0.1"
         classpath "gradle.plugin.de.fuerstenau:BuildConfigPlugin:1.1.8"
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:1.3.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

@@ -1,0 +1,35 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'com.google.cloud.tools.appengine'
+
+dependencies {
+  providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+  providedCompile 'com.google.appengine:appengine:1.9.57'
+}
+
+gretty {
+  overlay ':modules:core'
+  overlay ':modules:sample'
+  overlay ':modules:coreMySql'
+  overlay ':modules:sampleMySql'
+}
+
+war {
+  archiveName 'prod.war'
+}
+
+gretty {
+  contextPath = '/'
+  servletContainer = 'jetty9'  // What App Engine Flexible uses
+}
+
+appengine {
+  stage {
+    artifact = file('build/libs/prod.war')
+  }
+  deploy {   // deploy configuration
+    stopPreviousVersion = true  // default - stop the current version
+    promote = true              // default - & make this the current version
+  }
+}
