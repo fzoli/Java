@@ -106,7 +106,7 @@ Commit, tag and push it. (Optionally do this on a release branch.)\
 Now your git working directory is clean.
 
 Execute:\
-`./gradlew clean buildAllProducts`
+`./gradlew clean test buildAllProducts`
 
 That's all. You can find the outputs in each module.\
 Example for `prodMySql` package module:\
