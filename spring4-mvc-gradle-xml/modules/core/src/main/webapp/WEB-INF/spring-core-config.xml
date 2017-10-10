@@ -8,7 +8,7 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context.xsd ">
  
-	<context:component-scan base-package="com.mkyong.logic.service" />
-	<context:component-scan base-package="com.mkyong.logic.repository" />
+	<context:component-scan base-package="com.farcsal.logic.service" />
+	<context:component-scan base-package="com.farcsal.logic.repository" />
 
 </beans>
