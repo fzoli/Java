@@ -37,6 +37,11 @@ allprojects {
 
 }
 
+ext {
+    junitVersion = '4.12'
+    lombokVersion = '1.16.16'
+}
+
 subprojects {
 
     afterEvaluate { Project project ->
@@ -50,7 +55,8 @@ subprojects {
             targetCompatibility = JavaVersion.VERSION_1_8
 
             dependencies {
-                compileOnly 'org.projectlombok:lombok:1.16.16'
+                testCompile "junit:junit:${rootProject.junitVersion}"
+                compileOnly "org.projectlombok:lombok:${rootProject.lombokVersion}"
             }
 
         }
