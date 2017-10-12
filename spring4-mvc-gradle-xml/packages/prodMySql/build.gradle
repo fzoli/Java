@@ -13,3 +13,7 @@ gretty {
 war {
   archiveName 'prod.war'
 }
+
+gretty {
+  contextPath = '/prod'
+}

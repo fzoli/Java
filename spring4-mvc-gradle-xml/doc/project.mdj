@@ -3774,9 +3774,7 @@
 						}
 					],
 					"visibility": "public",
-					"classifier": {
-						"$ref": "AAAAAAFfEDzwCVywHHM="
-					}
+					"classifier": "ProjectModule"
 				},
 				{
 					"_type": "UMLObject",
@@ -3786,9 +3784,7 @@
 					},
 					"name": "coreMySql",
 					"visibility": "public",
-					"classifier": {
-						"$ref": "AAAAAAFfED0Q51zaisk="
-					}
+					"classifier": "DatabaseModule"
 				},
 				{
 					"_type": "UMLObject",
@@ -3798,9 +3794,7 @@
 					},
 					"name": "waterworksAlfoldviz",
 					"visibility": "public",
-					"classifier": {
-						"$ref": "AAAAAAFfED3fJ10F0EI="
-					}
+					"classifier": "FlavorModule"
 				},
 				{
 					"_type": "UMLObject",
@@ -3900,9 +3894,7 @@
 						}
 					],
 					"visibility": "public",
-					"classifier": {
-						"$ref": "AAAAAAFfED3zoF0vM+U="
-					}
+					"classifier": "PackageModule"
 				},
 				{
 					"_type": "UMLObject",
@@ -3958,9 +3950,7 @@
 						}
 					],
 					"visibility": "public",
-					"classifier": {
-						"$ref": "AAAAAAFfEDzwCVywHHM="
-					}
+					"classifier": "ProjectModule"
 				},
 				{
 					"_type": "UMLObject",
@@ -3970,9 +3960,7 @@
 					},
 					"name": "coreOracle",
 					"visibility": "public",
-					"classifier": {
-						"$ref": "AAAAAAFfED0Q51zaisk="
-					}
+					"classifier": "DatabaseModule"
 				},
 				{
 					"_type": "UMLObject",
@@ -3982,9 +3970,7 @@
 					},
 					"name": "waterworksMySql",
 					"visibility": "public",
-					"classifier": {
-						"$ref": "AAAAAAFfED0Q51zaisk="
-					}
+					"classifier": "DatabaseModule"
 				},
 				{
 					"_type": "UMLObject",
@@ -3994,9 +3980,7 @@
 					},
 					"name": "waterworksOracle",
 					"visibility": "public",
-					"classifier": {
-						"$ref": "AAAAAAFfED0Q51zaisk="
-					}
+					"classifier": "DatabaseModule"
 				},
 				{
 					"_type": "UMLObject",
@@ -4006,9 +3990,7 @@
 					},
 					"name": "waterworksBacsviz",
 					"visibility": "public",
-					"classifier": {
-						"$ref": "AAAAAAFfED3fJ10F0EI="
-					}
+					"classifier": "FlavorModule"
 				}
 			],
 			"visibility": "public"
