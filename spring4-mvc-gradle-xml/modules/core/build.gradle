@@ -33,11 +33,13 @@ buildConfig {
 	def TYPE_BOOLEAN = 'boolean'
 	def TYPE_INSTANT = 'java.time.Instant'
 
+	def FIELD_PACKAGE_ROOT = "PACKAGE_ROOT"
 	def FIELD_REVISION = "REVISION"
 	def FIELD_DIRTY = "DIRTY"
 	def FIELD_COMMIT_INSTANT = "COMMIT_INSTANT"
 	def FIELD_BUILD_INSTANT = "BUILD_INSTANT"
 
+	buildConfigField TYPE_STRING, FIELD_PACKAGE_ROOT, project.group
 	buildConfigField TYPE_STRING, FIELD_REVISION, revision
 	buildConfigField TYPE_BOOLEAN, FIELD_DIRTY, booleanToBuildConfig(dirty)
 	buildConfigField TYPE_INSTANT, FIELD_COMMIT_INSTANT, longToBuildConfigAsInstant(commitTime)

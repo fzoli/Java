@@ -1,5 +1,6 @@
 package com.farcsal.logic.repository.module;
 
+import com.farcsal.BuildConfig;
 import com.google.common.collect.ImmutableList;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.lang.reflect.Constructor;
 
 public class ModuleResolver<DescriptorT extends Annotation, ModuleT> {
 
-    private static final String SCAN_PACKAGE = "com";
+    private static final String SCAN_PACKAGE = BuildConfig.PACKAGE_ROOT;
 
     private final Class<DescriptorT> descriptorClass;
     private final Class<ModuleT> moduleClass;
