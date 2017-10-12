@@ -21,7 +21,7 @@ public class SampleProjectModule implements ProjectModule {
 
     @Override
     public int numberOfFlavors() {
-        return 0;
+        return 1;
     }
 
 }
