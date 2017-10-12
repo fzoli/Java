@@ -39,15 +39,35 @@ public class WelcomeController {
 		model.put("commitYear", AppVersion.getInstance().getCommitTime().getYear());
 		model.put("commitTime", dateTimeFormatter.format(AppVersion.getInstance().getCommitTime()));
 		model.put("buildTime", dateTimeFormatter.format(AppVersion.getInstance().getBuildTime()));
-		model.put("moduleNames", String.join(", ", pkg.getProjectModules().stream()
-				.map(Package.ProjectModule::getName)
-				.collect(ImmutableList.toImmutableList())));
-		model.put("supportedDatabase", pkg.getDatabaseModule()
-				.map(Package.DatabaseModule::getUpperCamelDatabaseTypeName)
-				.orElse("-"));
+		model.put("moduleNames", createModuleNames(pkg));
+		model.put("flavorNames", createFlavorNames(pkg));
+		model.put("supportedDatabase", createSupportedDatabase(pkg));
 		model.put("serverInfo", servletContext.getServerInfo());
-		model.put("osName", System.getProperty("os.name"));
+		model.put("osName", createOs());
 		return "index";
+	}
+
+	private String createModuleNames(Package pkg) {
+		return String.join(", ", pkg.getProjectModules().stream()
+				.map(Package.ProjectModule::getName)
+				.collect(ImmutableList.toImmutableList()));
+	}
+
+	private String createFlavorNames(Package pkg) {
+		String names = String.join(", ", pkg.getFlavorModules().stream()
+				.map(Package.FlavorModule::getName)
+				.collect(ImmutableList.toImmutableList()));
+		return names.isEmpty() ? "-" : names;
+	}
+
+	private String createSupportedDatabase(Package pkg) {
+		return pkg.getDatabaseModule()
+				.map(Package.DatabaseModule::getUpperCamelDatabaseTypeName)
+				.orElse("-");
+	}
+
+	private String createOs() {
+		return System.getProperty("os.name");
 	}
 
 }

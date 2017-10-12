@@ -41,6 +41,9 @@
 
 			<h4><spring:message code="welcome.title.modules" /></h4>
 			<p class="text-truncate">${moduleNames}</p>
+
+			<h4><spring:message code="welcome.title.flavors" /></h4>
+			<p class="text-truncate">${flavorNames}</p>
 		</div>
 		<div class="col-lg-6">
 			<h4><spring:message code="welcome.title.supported_database" /></h4>
@@ -53,7 +56,10 @@
 			<p class="text-truncate">${buildTime}</p>
 
 			<h4><spring:message code="welcome.title.server" /></h4>
-			<p class="text-truncate">${serverInfo} ${osName}</p>
+			<p class="text-truncate">${serverInfo}</p>
+
+			<h4><spring:message code="welcome.title.os" /></h4>
+			<p class="text-truncate">${osName}</p>
 		</div>
 	</div>
 	<footer class="footer">
