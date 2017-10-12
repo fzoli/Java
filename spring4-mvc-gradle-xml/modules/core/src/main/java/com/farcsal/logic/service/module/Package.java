@@ -37,6 +37,9 @@ public final class Package {
         @Nullable
         private final Package.DatabaseModule databaseModule;
 
+        @Nonnull
+        private final ImmutableList<Package.FlavorModule> flavorModules;
+
     }
 
     @Immutable
@@ -48,9 +51,30 @@ public final class Package {
         private final DatabaseType databaseType;
 
         public String getFriendlyDatabaseTypeName() {
-            return Package.getFriendlyDatabaseTypeName(databaseType);
+            return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, databaseType.name());
         }
 
+    }
+
+    @Immutable
+    @Builder
+    @Getter
+    public static final class FlavorModule {
+
+        @Nonnull
+        private final String name;
+
+    }
+
+    /**
+     * Returns the available flavor modules.
+     */
+    public ImmutableList<FlavorModule> getFlavorModules() {
+        ImmutableList.Builder<FlavorModule> b = ImmutableList.builder();
+        for (ProjectModule pm : projectModules) {
+            b = b.addAll(pm.getFlavorModules());
+        }
+        return b.build();
     }
 
     /**
@@ -72,21 +96,30 @@ public final class Package {
      */
     @Override
     public String toString() {
-        String modules = String.join(", ", projectModules.stream()
+        String joinedProjectModuleStrings = String.join(", ", createProjectModuleStrings());
+        return String.format("%s[%s]", name, joinedProjectModuleStrings);
+    }
+
+    private ImmutableList<String> createProjectModuleStrings() {
+        return projectModules.stream()
                 .map(this::createProjectModuleString)
-                .collect(ImmutableList.toImmutableList()));
-        return name + "[" + modules + "]";
+                .collect(ImmutableList.toImmutableList());
     }
 
     private String createProjectModuleString(ProjectModule pm) {
         Optional<Package.DatabaseModule> dbModule = Optional.ofNullable(pm.getDatabaseModule());
-        return dbModule
-                .map(databaseModule -> pm.getName() + "(" + getFriendlyDatabaseTypeName(databaseModule.getDatabaseType()) + ")")
-                .orElseGet(pm::getName);
-    }
-
-    private static String getFriendlyDatabaseTypeName(DatabaseType databaseType) {
-        return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, databaseType.name());
+        String dbModuleName = dbModule
+                .map(DatabaseModule::getFriendlyDatabaseTypeName)
+                .orElse("");
+        ImmutableList<String> flavorModuleNames = pm.getFlavorModules().stream()
+                .map(FlavorModule::getName)
+                .collect(ImmutableList.toImmutableList());
+        ImmutableList<String> names = ImmutableList.<String>builder()
+                .add(dbModuleName)
+                .addAll(flavorModuleNames)
+                .build();
+        String joinedNames = String.join(", ", names);
+        return String.format("%s(%s)", pm.getName(), joinedNames);
     }
 
 }

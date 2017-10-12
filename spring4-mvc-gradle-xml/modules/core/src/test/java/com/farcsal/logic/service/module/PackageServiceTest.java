@@ -1,17 +1,19 @@
 package com.farcsal.logic.service.module;
 
+import com.farcsal.logic.common.module.DatabaseType;
+import com.farcsal.logic.repository.module.databasemodule.DatabaseModule;
 import com.farcsal.logic.repository.module.databasemodule.DatabaseModuleRepository;
 import com.farcsal.logic.repository.module.databasemodule.DatabaseModuleRepositoryTestImpl;
+import com.farcsal.logic.repository.module.flavormodule.FlavorModule;
+import com.farcsal.logic.repository.module.flavormodule.FlavorModuleRepository;
+import com.farcsal.logic.repository.module.flavormodule.FlavorModuleRepositoryTestImpl;
 import com.farcsal.logic.repository.module.packagemodule.PackageModule;
 import com.farcsal.logic.repository.module.packagemodule.PackageModuleRepository;
+import com.farcsal.logic.repository.module.packagemodule.PackageModuleRepositoryTestImpl;
+import com.farcsal.logic.repository.module.projectmodule.ProjectModule;
 import com.farcsal.logic.repository.module.projectmodule.ProjectModuleRepository;
 import com.farcsal.logic.repository.module.projectmodule.ProjectModuleRepositoryTestImpl;
 import com.google.common.collect.ImmutableList;
-import com.farcsal.logic.common.module.DatabaseType;
-import com.farcsal.logic.repository.module.databasemodule.DatabaseModule;
-import com.farcsal.logic.repository.module.packagemodule.PackageModuleRepositoryTestImpl;
-import com.farcsal.logic.repository.module.projectmodule.ProjectModule;
-
 import com.google.common.collect.ImmutableMap;
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,6 +54,24 @@ public class PackageServiceTest {
             public boolean hasDatabase() {
                 return true;
             }
+
+            @Override
+            public int numberOfFlavors() {
+                return 1;
+            }
+        };
+        final FlavorModule coreLive = new FlavorModule() {
+            @Nonnull
+            @Override
+            public String getModuleName() {
+                return "coreLive";
+            }
+
+            @Nonnull
+            @Override
+            public Class<? extends ProjectModule> getProjectModuleClass() {
+                return core.getClass();
+            }
         };
         final DatabaseModule coreMySql = new DatabaseModule() {
             @Override
@@ -72,10 +92,13 @@ public class PackageServiceTest {
         ProjectModuleRepository projectModuleRepository = new ProjectModuleRepositoryTestImpl(ImmutableList.<ProjectModule>builder()
                 .add(core)
                 .build());
+        FlavorModuleRepository flavorModuleRepository = new FlavorModuleRepositoryTestImpl(ImmutableList.<FlavorModule>builder()
+                .add(coreLive)
+                .build());
         DatabaseModuleRepository databaseModuleRepository = new DatabaseModuleRepositoryTestImpl(ImmutableList.<DatabaseModule>builder()
                 .add(coreMySql)
                 .build());
-        PackageService packageService = new PackageService(packageModuleRepository, projectModuleRepository, databaseModuleRepository);
+        PackageService packageService = new PackageService(packageModuleRepository, projectModuleRepository, databaseModuleRepository, flavorModuleRepository);
 
         // When
         Package pkg = packageService.getPackage();

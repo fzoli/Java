@@ -3,6 +3,8 @@ package com.farcsal.logic.service.module;
 import com.farcsal.logic.common.module.DatabaseType;
 import com.farcsal.logic.repository.module.databasemodule.DatabaseModule;
 import com.farcsal.logic.repository.module.databasemodule.DatabaseModuleRepository;
+import com.farcsal.logic.repository.module.flavormodule.FlavorModule;
+import com.farcsal.logic.repository.module.flavormodule.FlavorModuleRepository;
 import com.farcsal.logic.repository.module.packagemodule.PackageModule;
 import com.farcsal.logic.repository.module.packagemodule.PackageModuleRepository;
 import com.farcsal.logic.repository.module.projectmodule.ProjectModuleRepository;
@@ -13,6 +15,7 @@ import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 
 @Service
@@ -21,15 +24,17 @@ public class PackageService {
     private final PackageModuleRepository packageModuleRepository;
     private final ProjectModuleRepository projectModuleRepository;
     private final DatabaseModuleRepository databaseModuleRepository;
+    private final FlavorModuleRepository flavorModuleRepository;
 
     private Package pkg;
 
     @Autowired
     @Builder
-    public PackageService(PackageModuleRepository packageModuleRepository, ProjectModuleRepository projectModuleRepository, DatabaseModuleRepository databaseModuleRepository) {
+    public PackageService(PackageModuleRepository packageModuleRepository, ProjectModuleRepository projectModuleRepository, DatabaseModuleRepository databaseModuleRepository, FlavorModuleRepository flavorModuleRepository) {
         this.packageModuleRepository = packageModuleRepository;
         this.projectModuleRepository = projectModuleRepository;
         this.databaseModuleRepository = databaseModuleRepository;
+        this.flavorModuleRepository = flavorModuleRepository;
     }
 
     @Synchronized
@@ -58,9 +63,11 @@ public class PackageService {
             else {
                 dbm = null;
             }
+            ImmutableList<FlavorModule> fms = getFlavorModules(pm);
             Package.ProjectModule m = Package.ProjectModule.builder()
                     .name(pm.getModuleName())
                     .databaseModule(dbm)
+                    .flavorModules(mapFlavorModules(fms))
                     .build();
             b.add(m);
         }
@@ -69,6 +76,33 @@ public class PackageService {
                 .projectModules(b.build())
                 .properties(packageModule.getProperties())
                 .build();
+    }
+
+    private ImmutableList<FlavorModule> getFlavorModules(ProjectModule pm) {
+        ImmutableList<FlavorModule> fms = findFlavorModules(pm);
+        if (pm.numberOfFlavors() < 0) {
+            throw new WrongBuildConfigurationException(String.format("Invalid number of flavors: %s", pm.numberOfFlavors()));
+        }
+        if (pm.numberOfFlavors() != fms.size()) {
+            throw new WrongBuildConfigurationException(String.format("Number of flavors must be %s. Found: %s", pm.numberOfFlavors(), fms.size()));
+        }
+        return fms;
+    }
+
+    private ImmutableList<FlavorModule> findFlavorModules(ProjectModule pm) {
+        ImmutableList<FlavorModule> fms = flavorModuleRepository.getFlavorModules();
+        return fms.stream()
+                .filter(fm -> fm.getProjectModuleClass() == pm.getClass())
+                .collect(ImmutableList.toImmutableList());
+    }
+
+    @Nonnull
+    private ImmutableList<Package.FlavorModule> mapFlavorModules(@Nonnull ImmutableList<FlavorModule> modules) {
+        return modules.stream()
+                .map(fm-> Package.FlavorModule.builder()
+                        .name(fm.getModuleName())
+                        .build())
+                .collect(ImmutableList.toImmutableList());
     }
 
     /**

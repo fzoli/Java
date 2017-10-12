@@ -19,4 +19,9 @@ public class CoreProjectModule implements ProjectModule {
         return true;
     }
 
+    @Override
+    public int numberOfFlavors() {
+        return 0;
+    }
+
 }

@@ -9,4 +9,6 @@ public interface ProjectModule {
 
     boolean hasDatabase();
 
+    int numberOfFlavors(); // positive number
+
 }

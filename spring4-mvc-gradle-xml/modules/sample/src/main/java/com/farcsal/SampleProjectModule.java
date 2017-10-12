@@ -19,4 +19,9 @@ public class SampleProjectModule implements ProjectModule {
         return true;
     }
 
+    @Override
+    public int numberOfFlavors() {
+        return 0;
+    }
+
 }
