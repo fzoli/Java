@@ -53,16 +53,11 @@ public class PackageService {
             throw new WrongBuildConfigurationException("No project module has found.");
         }
         for (ProjectModule pm : pms) {
-            Optional<DatabaseModule> a = getDatabaseModule(packageModule, pm);
-            Package.DatabaseModule dbm;
-            if (a.isPresent()) {
-                dbm = Package.DatabaseModule.builder()
-                        .databaseType(a.get().getDatabaseType())
-                        .build();
-            }
-            else {
-                dbm = null;
-            }
+            Package.DatabaseModule dbm = getDatabaseModule(packageModule, pm)
+                    .map(m -> Package.DatabaseModule.builder()
+                            .databaseType(m.getDatabaseType())
+                            .build())
+                    .orElse(null);
             ImmutableList<FlavorModule> fms = getFlavorModules(pm);
             Package.ProjectModule m = Package.ProjectModule.builder()
                     .name(pm.getModuleName())
@@ -99,7 +94,7 @@ public class PackageService {
     @Nonnull
     private ImmutableList<Package.FlavorModule> mapFlavorModules(@Nonnull ImmutableList<FlavorModule> modules) {
         return modules.stream()
-                .map(fm-> Package.FlavorModule.builder()
+                .map(fm -> Package.FlavorModule.builder()
                         .name(fm.getModuleName())
                         .build())
                 .collect(ImmutableList.toImmutableList());
