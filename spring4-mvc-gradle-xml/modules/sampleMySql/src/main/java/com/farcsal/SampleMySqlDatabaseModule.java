@@ -5,15 +5,19 @@ import com.farcsal.logic.repository.module.databasemodule.DatabaseModuleDescript
 import com.farcsal.logic.common.module.DatabaseType;
 import com.farcsal.logic.repository.module.projectmodule.ProjectModule;
 
+import javax.annotation.Nonnull;
+
 @DatabaseModuleDescriptor
 public class SampleMySqlDatabaseModule implements DatabaseModule {
 
     @Override
+    @Nonnull
     public Class<? extends ProjectModule> getProjectModuleClass() {
         return SampleProjectModule.class;
     }
 
     @Override
+    @Nonnull
     public DatabaseType getDatabaseType() {
         return DatabaseType.MY_SQL;
     }

@@ -15,6 +15,8 @@ import com.farcsal.logic.repository.module.projectmodule.ProjectModule;
 import org.junit.Assert;
 import org.junit.Test;
 
+import javax.annotation.Nonnull;
+
 public class PackageServiceTest {
 
     @Test
@@ -22,6 +24,7 @@ public class PackageServiceTest {
         // Given
         final PackageModule prodMySql = new PackageModule() {
             @Override
+            @Nonnull
             public String getModuleName() {
                 return "prodMySql";
             }
@@ -33,6 +36,7 @@ public class PackageServiceTest {
         };
         final ProjectModule core = new ProjectModule() {
             @Override
+            @Nonnull
             public String getModuleName() {
                 return "core";
             }
@@ -44,11 +48,13 @@ public class PackageServiceTest {
         };
         final DatabaseModule coreMySql = new DatabaseModule() {
             @Override
+            @Nonnull
             public Class<? extends ProjectModule> getProjectModuleClass() {
                 return core.getClass();
             }
 
             @Override
+            @Nonnull
             public DatabaseType getDatabaseType() {
                 return DatabaseType.MY_SQL;
             }
