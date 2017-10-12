@@ -43,7 +43,7 @@ public class WelcomeController {
 				.map(Package.ProjectModule::getName)
 				.collect(ImmutableList.toImmutableList())));
 		model.put("supportedDatabase", pkg.getDatabaseModule()
-				.map(Package.DatabaseModule::getFriendlyDatabaseTypeName)
+				.map(Package.DatabaseModule::getUpperCamelDatabaseTypeName)
 				.orElse("-"));
 		model.put("serverInfo", servletContext.getServerInfo());
 		model.put("osName", System.getProperty("os.name"));

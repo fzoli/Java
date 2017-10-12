@@ -50,8 +50,12 @@ public final class Package {
         @Nonnull
         private final DatabaseType databaseType;
 
-        public String getFriendlyDatabaseTypeName() {
+        public String getUpperCamelDatabaseTypeName() {
             return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, databaseType.name());
+        }
+
+        public String getLowerCamelDatabaseTypeName() {
+            return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, databaseType.name());
         }
 
     }
@@ -109,7 +113,7 @@ public final class Package {
     private String createProjectModuleString(ProjectModule pm) {
         Optional<Package.DatabaseModule> dbModule = Optional.ofNullable(pm.getDatabaseModule());
         String dbModuleName = dbModule
-                .map(DatabaseModule::getFriendlyDatabaseTypeName)
+                .map(DatabaseModule::getLowerCamelDatabaseTypeName)
                 .orElse("");
         ImmutableList<String> flavorModuleNames = pm.getFlavorModules().stream()
                 .map(FlavorModule::getName)
