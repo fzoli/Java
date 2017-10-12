@@ -43,7 +43,7 @@ public class WelcomeController {
 		model.put("flavorNames", createFlavorNames(pkg));
 		model.put("supportedDatabase", createSupportedDatabase(pkg));
 		model.put("serverInfo", servletContext.getServerInfo());
-		model.put("osName", createOs());
+		model.put("osName", createOsName());
 		return "index";
 	}
 
@@ -66,8 +66,8 @@ public class WelcomeController {
 				.orElse("-");
 	}
 
-	private String createOs() {
-		return System.getProperty("os.name");
+	private String createOsName() {
+		return String.join(" ", System.getProperty("os.name"), System.getProperty("os.version"));
 	}
 
 }
