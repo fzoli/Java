@@ -12,6 +12,7 @@ import com.farcsal.logic.repository.module.databasemodule.DatabaseModule;
 import com.farcsal.logic.repository.module.packagemodule.PackageModuleRepositoryTestImpl;
 import com.farcsal.logic.repository.module.projectmodule.ProjectModule;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,8 +24,8 @@ public class PackageServiceTest {
     public void positiveTest() {
         // Given
         final PackageModule prodMySql = new PackageModule() {
-            @Override
             @Nonnull
+            @Override
             public String getModuleName() {
                 return "prodMySql";
             }
@@ -32,6 +33,12 @@ public class PackageServiceTest {
             @Override
             public DatabaseType getExpectedDatabaseType() {
                 return DatabaseType.MY_SQL;
+            }
+
+            @Nonnull
+            @Override
+            public ImmutableMap<String, String> getProperties() {
+                return ImmutableMap.of("key1", "value1");
             }
         };
         final ProjectModule core = new ProjectModule() {
@@ -71,10 +78,11 @@ public class PackageServiceTest {
         PackageService packageService = new PackageService(packageModuleRepository, projectModuleRepository, databaseModuleRepository);
 
         // When
-        com.farcsal.logic.service.module.Package pkg = packageService.getPackage();
+        Package pkg = packageService.getPackage();
 
         // Then
         Assert.assertEquals("prodMySql", pkg.getName());
+        Assert.assertEquals("value1", pkg.getProperties().get("key1"));
         Assert.assertEquals(1, pkg.getProjectModules().size());
         Assert.assertEquals("core", pkg.getProjectModules().get(0).getName());
         Assert.assertNotNull(pkg.getProjectModules().get(0).getDatabaseModule());

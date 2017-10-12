@@ -3,6 +3,7 @@ package com.farcsal.logic.service.module;
 import com.farcsal.logic.common.module.DatabaseType;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -21,6 +22,9 @@ public final class Package {
 
     @Nonnull
     private final ImmutableList<Package.ProjectModule> projectModules;
+
+    @Nonnull
+    private final ImmutableMap<String, String> properties;
 
     @Immutable
     @Builder

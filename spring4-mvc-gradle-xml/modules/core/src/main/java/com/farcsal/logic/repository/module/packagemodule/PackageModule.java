@@ -1,6 +1,7 @@
 package com.farcsal.logic.repository.module.packagemodule;
 
 import com.farcsal.logic.common.module.DatabaseType;
+import com.google.common.collect.ImmutableMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -13,7 +14,7 @@ public interface PackageModule {
     @Nullable
     DatabaseType getExpectedDatabaseType();
 
-    /*@Nonnull // TODO
-    ImmutableMap<String, String> getProperties();*/
+    @Nonnull
+    ImmutableMap<String, String> getProperties();
 
 }

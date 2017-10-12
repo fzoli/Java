@@ -29,33 +29,34 @@ public class PackageService {
         this.databaseModuleRepository = databaseModuleRepository;
     }
 
-    public com.farcsal.logic.service.module.Package getPackage() {
+    public Package getPackage() {
         PackageModule packageModule = getPackageModule();
-        ImmutableList.Builder<com.farcsal.logic.service.module.Package.ProjectModule> b = ImmutableList.builder();
+        ImmutableList.Builder<Package.ProjectModule> b = ImmutableList.builder();
         ImmutableList<ProjectModule> pms = projectModuleRepository.getProjectModules();
         if (pms.isEmpty()) {
             throw new WrongBuildConfigurationException("No project module has found.");
         }
         for (ProjectModule pm : pms) {
             Optional<DatabaseModule> a = getDatabaseModule(packageModule, pm);
-            com.farcsal.logic.service.module.Package.DatabaseModule dbm;
+            Package.DatabaseModule dbm;
             if (a.isPresent()) {
-                dbm = com.farcsal.logic.service.module.Package.DatabaseModule.builder()
+                dbm = Package.DatabaseModule.builder()
                         .databaseType(a.get().getDatabaseType())
                         .build();
             }
             else {
                 dbm = null;
             }
-            com.farcsal.logic.service.module.Package.ProjectModule m = com.farcsal.logic.service.module.Package.ProjectModule.builder()
+            Package.ProjectModule m = Package.ProjectModule.builder()
                     .name(pm.getModuleName())
                     .databaseModule(dbm)
                     .build();
             b.add(m);
         }
-        return com.farcsal.logic.service.module.Package.builder()
+        return Package.builder()
                 .name(packageModule.getModuleName())
                 .projectModules(b.build())
+                .properties(packageModule.getProperties())
                 .build();
     }
 
