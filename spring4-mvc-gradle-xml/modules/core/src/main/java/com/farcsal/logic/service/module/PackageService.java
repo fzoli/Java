@@ -9,6 +9,7 @@ import com.farcsal.logic.repository.module.projectmodule.ProjectModuleRepository
 import com.google.common.collect.ImmutableList;
 import com.farcsal.logic.repository.module.projectmodule.ProjectModule;
 import lombok.Builder;
+import lombok.Synchronized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public class PackageService {
     private final ProjectModuleRepository projectModuleRepository;
     private final DatabaseModuleRepository databaseModuleRepository;
 
+    private Package pkg;
+
     @Autowired
     @Builder
     public PackageService(PackageModuleRepository packageModuleRepository, ProjectModuleRepository projectModuleRepository, DatabaseModuleRepository databaseModuleRepository) {
@@ -29,7 +32,15 @@ public class PackageService {
         this.databaseModuleRepository = databaseModuleRepository;
     }
 
+    @Synchronized
     public Package getPackage() {
+        if (pkg == null) {
+            pkg = createPackage();
+        }
+        return pkg;
+    }
+
+    private Package createPackage() {
         PackageModule packageModule = getPackageModule();
         ImmutableList.Builder<Package.ProjectModule> b = ImmutableList.builder();
         ImmutableList<ProjectModule> pms = projectModuleRepository.getProjectModules();
